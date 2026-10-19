@@ -4,13 +4,77 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Canal Grid</title>
-<style>body{font-family:system-ui,sans-serif;max-width:640px;margin:48px auto;padding:0 16px;line-height:1.6;color:#222;background:#fff}a{color:#0a58ca}</style>
+<meta name="description" content="Mobile games by Canal Grid.">
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--text:#222;--muted:#666;--line:#e4ddd2;--link:#0a58ca;--btn:#1f7a4d}
+@media (prefers-color-scheme:dark){:root{--bg:#16140f;--card:#211e18;--text:#eee;--muted:#aaa;--line:#3a352c;--link:#7fb0ff;--btn:#2c9a63}}
+*{box-sizing:border-box}
+body{font-family:system-ui,sans-serif;max-width:720px;margin:0 auto;padding:40px 16px;line-height:1.5;color:var(--text);background:var(--bg)}
+h1{margin:0 0 4px}
+.lead{color:var(--muted);margin:0 0 28px}
+.game{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.game img{width:72px;height:72px;border-radius:16px;flex:none;background:var(--line)}
+.game h2{font-size:1.1rem;margin:0}
+.game p{margin:2px 0 8px;color:var(--muted);font-size:.95rem}
+.links{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.9rem}
+a{color:var(--link)}
+a.play{background:var(--btn);color:#fff;text-decoration:none;padding:3px 10px;border-radius:999px}
+.soon{font-size:.8rem;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:999px}
+footer{margin-top:32px;color:var(--muted);font-size:.85rem}
+</style>
 </head>
 <body>
 <h1>Canal Grid</h1>
-<p>Mobile games by Canal Grid.</p>
-<ul>
-<li>Woodturning Ultra Smooth 3D &middot; <a href="https://canalgrid.github.io/WoodUltraSmooth3D-privacy/privacy/">Privacy policy</a></li>
-</ul>
+<p class="lead">Mobile games by Canal Grid.</p>
+
+<div class="game">
+  <img src="https://play-lh.googleusercontent.com/VlQCPtN91pqIVHOcK2mNFocvB6WpYNMxJzGpBXnjTJF-AGQoO3W_AcjX-quukLP12_W6Itv675uhr8l321cF=s144-rw" alt="">
+  <div>
+    <h2>Woodturning Ultra Smooth 3D</h2>
+    <p>Spin the lathe and carve satisfying wooden pieces.</p>
+    <div class="links">
+      <a class="play" href="https://play.google.com/store/apps/details?id=com.canalgrid.WoodUltraSmooth3D">Google Play</a>
+      <a href="https://canalgrid.github.io/WoodUltraSmooth3D-privacy/privacy/">Privacy policy</a>
+    </div>
+  </div>
+</div>
+
+<div class="game">
+  <img src="https://play-lh.googleusercontent.com/G8I804qn-n0vqTdCniWx8hZ0GcMRxx4a5Cbq8b8IGxy5lCJCrmtb_pNkCmYA0VfdL3MKlKnHospfm9G6s_z7=s144-rw" alt="">
+  <div>
+    <h2>Color Block: ColorPop</h2>
+    <p>Colorful block puzzle — match, pop and clear the board.</p>
+    <div class="links">
+      <a class="play" href="https://play.google.com/store/apps/details?id=com.canalgrid.colorbox">Google Play</a>
+      <a href="https://canalgrid.github.io/colorbox-privacy/">Privacy policy</a>
+    </div>
+  </div>
+</div>
+
+<div class="game">
+  <img src="https://play-lh.googleusercontent.com/cOtZcbRw4KTuXsxaiyLW5g_DnadV9I43rgXJeCvomouKMnkXYJERWtPcmo1sV_NTEmv1918FBfZLYlzGr_43Ng=s144-rw" alt="">
+  <div>
+    <h2>Pixel Putt: Mini Golf Worlds</h2>
+    <p>Pixel-art mini golf: 90 holes, 3 worlds, real physics.</p>
+    <div class="links">
+      <a class="play" href="https://play.google.com/store/apps/details?id=com.canelgrid.pixelputt">Google Play</a>
+      <a href="https://canalgrid.github.io/pixelputt-privacy/privacy/">Privacy policy</a>
+    </div>
+  </div>
+</div>
+
+<div class="game">
+  <div style="width:72px;height:72px;border-radius:16px;background:var(--line);display:grid;place-items:center;font-size:32px;flex:none">🐜</div>
+  <div>
+    <h2>Ant Feast</h2>
+    <p>Idle ant colony game.</p>
+    <div class="links">
+      <span class="soon">Coming soon</span>
+      <a href="https://canalgrid.github.io/AntFeast-privacy/">Privacy policy</a>
+    </div>
+  </div>
+</div>
+
+<footer>Contact: <a href="mailto:vmwnpela@gmail.com">vmwnpela@gmail.com</a> · <a href="https://play.google.com/store/apps/dev?id=7008286520644892592">All games on Google Play</a></footer>
 </body>
 </html>
