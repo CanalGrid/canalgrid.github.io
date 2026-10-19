@@ -1,0 +1,1398 @@
+<!doctype html>
+<meta charset="utf8">
+<title>Canal Grid — Header</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#0F1214; --land:#24FF8E; --bank:#0F1214; --water:#64B0F7;
+    --panel:#151A1D; --line:#232A2E; --text:#EDEDEB; --muted:#7C8A8E;
+    --sans:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1200px;margin:0 auto;padding:36px 24px 64px;display:flex;flex-direction:column;gap:26px}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  h1{margin:6px 0 0;font-size:28px;letter-spacing:-.02em}
+  .sub{margin:6px 0 0;color:var(--muted);max-width:62ch}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:20px;display:flex;flex-direction:column;gap:16px}
+  .card-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .stage{background:#000;border:1px solid var(--line);border-radius:3px;padding:18px;overflow:auto}
+  #preview{display:block;width:100%;height:auto;border-radius:2px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:3px;padding:9px 16px;cursor:pointer}
+  button:hover{border-color:var(--land)}
+  .primary{background:var(--land);border-color:var(--land);color:#062A16;font-weight:600}
+  .primary:hover{filter:brightness(1.08)}
+  .code{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:pre;line-height:1.9}
+  label{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  input[type=range]{accent-color:var(--land);width:180px}
+  #status{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+  .cols{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start}
+  @media (max-width:960px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+  .field{display:grid;grid-template-columns:88px 34px 1fr;gap:10px;align-items:center}
+  .field + .field{margin-top:9px}
+  .field .name{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  input[type=color]{-webkit-appearance:none;appearance:none;width:34px;height:26px;padding:0;
+    background:transparent;border:1px solid var(--line);border-radius:3px;cursor:pointer}
+  input[type=color]::-webkit-color-swatch-wrapper{padding:2px}
+  input[type=color]::-webkit-color-swatch{border:0;border-radius:2px}
+  input[type=text]{font:12px var(--mono);color:var(--text);background:#0C1013;
+    border:1px solid var(--line);border-radius:3px;padding:7px 9px;width:100%;text-transform:uppercase}
+  input[type=text].txt{font:14px var(--sans);text-transform:none;letter-spacing:.04em}
+  input:focus{outline:2px solid var(--land);outline-offset:1px;border-color:var(--land)}
+  .stack{display:flex;flex-direction:column;gap:9px}
+  .stack .name{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+  .presets{display:flex;flex-wrap:wrap;gap:8px}
+  .presets button{padding:7px 11px;font-size:12px}
+  .chip{display:inline-flex;gap:5px;align-items:center}
+  .chip i{width:10px;height:10px;border-radius:2px;display:block}
+  .chip b.x{font-weight:400;color:var(--muted);padding:0 1px 0 5px}
+  .chip b.x:hover{color:#FF6B5A}
+  button:disabled{opacity:.45;cursor:progress}
+  .hint{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
+  .hint[data-warn]{color:#FFC24D}
+
+  .iconrow{display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap;
+    background:#0A0D0F;border:1px solid var(--line);border-radius:3px;padding:22px}
+  .icon-item{display:flex;flex-direction:column;align-items:center;gap:9px}
+  .icon-item span{font-family:var(--mono);font-size:10px;color:var(--muted)}
+  .icon-item canvas{display:block}
+  .icon-item[data-mask="circle"] canvas{border-radius:50%}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Canal Grid</div>
+    <h1>Header 4096 × 2304</h1>
+    <p class="sub">รูปทรงเดียวกับ icon-lab-published.html ทุกพิกเซล — ต่อด้วย wordmark จาก make-final.mjs
+      ปรับสีและข้อความได้สด แล้วส่งออกเป็น <b>PNG 24 บิต (ไม่มีช่องอัลฟา) หรือ JPG ขนาด 4096 × 2304</b> ตามสเปกสโตร์</p>
+  </header>
+
+  <div class="cols">
+    <div class="card">
+      <div class="card-title">Preview</div>
+      <div class="stage"><canvas id="preview"></canvas></div>
+      <div class="row">
+        <button class="primary" id="dlStore">สโตร์ ≤ 1 MB · 4096×2304</button>
+        <button id="dl">PNG 24-bit · 4096×2304</button>
+        <button id="dlJpg">JPG · 4096×2304</button>
+        <button id="dl2x">1024 wide</button>
+        <button id="dlIcon">ไอคอน 512×512</button>
+        <span id="status"></span>
+      </div>
+      <div class="row">
+        <label>ระยะห่างมาร์ก–ตัวอักษร <input type="range" id="gapS" min="120" max="520" value="330"><span id="gapV" class="code">330</span></label>
+        <label>ขนาดมาร์ก <input type="range" id="markS" min="600" max="1400" value="1010"><span id="markV" class="code">1010</span></label>
+      </div>
+      <div class="card-title">Grid BG — ฉากหลังเปอร์สเปกทีฟ</div>
+      <div class="row">
+        <button id="bgOn">เปิด Grid BG</button>
+        <label>สีเส้น <input type="color" id="bgCol" value="#1C2A30"><input type="text" id="bgColHex" spellcheck="false" maxlength="7" style="width:86px" value="#1C2A30"></label>
+        <button id="bgSeed">🎲 สุ่มลายใหม่</button>
+      </div>
+      <div class="presets" id="bgModes"></div>
+      <div class="row">
+        <label>จำนวนช่อง <input type="range" id="bgN" min="6" max="28" value="14"><span id="bgNV" class="code">14</span></label>
+        <label>ความลึกห้อง <input type="range" id="bgDepth" min="20" max="70" value="42"><span id="bgDepthV" class="code">42</span></label>
+        <label>ชั้นความลึก <input type="range" id="bgRings" min="3" max="18" value="9"><span id="bgRingsV" class="code">9</span></label>
+        <label>ความเข้ม <input type="range" id="bgAlpha" min="5" max="100" value="45"><span id="bgAlphaV" class="code">45</span></label>
+      </div>
+      <div class="row">
+        <label>ขนาด % <input type="range" id="bgScale" min="30" max="250" value="100"><span id="bgScaleV" class="code">100</span></label>
+        <label>ตำแหน่ง X <input type="range" id="bgOX" min="-80" max="80" value="0"><span id="bgOXV" class="code">0</span></label>
+        <label>ตำแหน่ง Y <input type="range" id="bgOY" min="-80" max="80" value="0"><span id="bgOYV" class="code">0</span></label>
+      </div>
+      <div class="card-title">รูปทรงมาร์ก (Header)</div>
+      <div class="row">
+        <div class="presets" id="routeBtns"></div>
+        <button id="clipBtn">แม่น้ำไม่เกินขอบ: ปิด</button>
+      </div>
+      <div class="row">
+        <label>จำนวนช่อง <input type="range" id="shN" min="3" max="7" value="5"><span id="shNV" class="code">5</span></label>
+        <label>ร่องกริด <input type="range" id="shGap" min="0" max="20" value="6"><span id="shGapV" class="code">6</span></label>
+        <label>ความกว้างคลอง <input type="range" id="shCanal" min="14" max="64" value="32"><span id="shCanalV" class="code">32</span></label>
+        <label>ตลิ่ง <input type="range" id="shGutter" min="2" max="30" value="13"><span id="shGutterV" class="code">13</span></label>
+        <label>คลองแยก % <input type="range" id="shBranch" min="30" max="90" value="58"><span id="shBranchV" class="code">58</span></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ชุดสี</div>
+      <div id="fields"></div>
+
+      <div class="stack">
+        <div class="name">ชุดสำเร็จ</div>
+        <div class="presets" id="presets"></div>
+      </div>
+
+      <div class="card-title" style="margin-top:6px">ข้อความ</div>
+      <div class="stack">
+        <div class="name">บรรทัดบน</div>
+        <input type="text" class="txt" id="line1" value="CANAL">
+        <div class="name">บรรทัดล่าง</div>
+        <input type="text" class="txt" id="line2" value="GRID">
+        <div class="hint" id="typeHint"></div>
+      </div>
+
+      <div class="stack">
+        <div class="name">ค่าปัจจุบันทั้งหมด — Header + Icon</div>
+        <div class="code" id="paletteOut" style="max-height:260px;overflow:auto"></div>
+        <div class="row">
+          <button id="copySettings">📋 คัดลอก settings</button>
+          <button id="dlSettings">ดาวน์โหลด settings.json</button>
+          <span id="copyStatus" class="hint"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <div class="card-title">ไอคอนวงกลม — ตรวจที่ขนาดใช้งานจริง</div>
+      <p class="hint" style="margin:0">พื้นสีเขียวกินเต็มขอบ ไม่มีกรอบมืดรอบนอก — แพลตฟอร์มจะครอปเป็นวงกลมเอง เส้นกริดจึงวิ่งทะลุขอบแทนที่จะเป็นช่องสี่เหลี่ยมลอย ๆ ที่โดนตัดมุม</p>
+      <div class="iconrow" id="iconRow"></div>
+      <div class="row">
+        <button class="primary" id="dlIcon">PNG 24-bit · 512×512</button>
+        <button id="dlIcon1024">1024×1024</button>
+        <button id="dlIconSq">แบบมีขอบ (สำหรับช่องสี่เหลี่ยม)</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">รูปทรงไอคอน</div>
+      <div class="stack">
+        <label>จำนวนช่อง <input type="range" id="icN" min="2" max="6" value="3"><span id="icNV" class="code">3</span></label>
+        <label>ความหนาเส้นกริด <input type="range" id="icLine" min="6" max="40" value="18"><span id="icLineV" class="code">18</span></label>
+        <label>ความกว้างคลอง <input type="range" id="icCanal" min="30" max="140" value="76"><span id="icCanalV" class="code">76</span></label>
+        <label>ความหนาตลิ่ง <input type="range" id="icBank" min="0" max="40" value="0"><span id="icBankV" class="code">0</span></label>
+        <label>ซูม <input type="range" id="icZoom" min="90" max="220" value="140"><span id="icZoomV" class="code">140</span></label>
+      </div>
+      <div class="hint">ค่าเดิม (กริด 5 ช่อง, คลอง 32) ออกแบบมาสำหรับ header ขนาดใหญ่ พอย่อลงเป็น avatar 32–48 px ช่องจะเล็กจนกลายเป็นลายพร่า — กริด 3 ช่องกับคลองกว้างจะอ่านออกทุกขนาด</div>
+      <div class="presets" id="iconPresets"></div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <div class="card-title">บันทึกลงเครื่อง</div>
+      <div class="stack">
+        <div class="name">ตั้งชื่อชุดงาน</div>
+        <input type="text" class="txt" id="saveName" value="canal-grid" spellcheck="false">
+      </div>
+      <div class="row">
+        <button class="primary" id="saveAll">💾 Save All — เซฟทุกไฟล์ปุ่มเดียว</button>
+        <button id="storeSave">เก็บชุดนี้ไว้ในเบราว์เซอร์</button>
+        <span id="saveStatus" class="hint"></span>
+      </div>
+      <div class="hint" id="manifest"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ประวัติการปรับ</div>
+      <div class="hint" id="autosave">—</div>
+      <div class="stack">
+        <div class="name">ชุดที่เก็บไว้</div>
+        <div class="presets" id="storeList"></div>
+      </div>
+      <div class="row">
+        <button id="loadJson">โหลดจากไฟล์ .json</button>
+        <button id="resetAll">คืนค่าเริ่มต้น</button>
+      </div>
+      <input type="file" id="jsonFile" accept="application/json" hidden>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------- palette ---------- */
+  const DEFAULTS = { bg:"#0F1214", land:"#24FF8E", bank:"#0F1214", water:"#64B0F7",
+                     type:"#F2F2F0", type2:"#24FF8E" };
+  const C = { ...DEFAULTS };
+  const KEYS = ["bg","land","bank","water","type","type2"];
+  const LABEL = { bg:"พื้นหลัง", land:"แผ่นดิน", bank:"ตลิ่ง", water:"น้ำ",
+                  type:"บรรทัดบน", type2:"บรรทัดล่าง" };
+
+  const PRESETS = [
+    { name:"นีออน · น้ำฟ้า", c:{ bg:"#0F1214", land:"#24FF8E", bank:"#0F1214", water:"#64B0F7", type:"#F2F2F0", type2:"#24FF8E" } },
+    { name:"นีออน · คลองมืด", c:{ bg:"#0A0A0A", land:"#24FF8E", bank:"#0A0A0A", water:"#0A0A0A", type:"#F2F2F0", type2:"#24FF8E" } },
+    { name:"แบรนด์เดิม", c:{ bg:"#0B0E14", land:"#8FE8DC", bank:"#0B0E14", water:"#2F5E60", type:"#E8F6F3", type2:"#8FE8DC" } },
+    { name:"กรมท่า · อำพัน", c:{ bg:"#0B1530", land:"#F0E7D6", bank:"#0B1530", water:"#FFB020", type:"#F0E7D6", type2:"#FFB020" } },
+    { name:"ขาวดำแดง", c:{ bg:"#000000", land:"#FFFFFF", bank:"#000000", water:"#FF0033", type:"#FFFFFF", type2:"#FF0033" } },
+    { name:"หมึก · ครีม", c:{ bg:"#101010", land:"#EFEDE6", bank:"#101010", water:"#2B4BFF", type:"#EFEDE6", type2:"#2B4BFF" } },
+  ];
+
+  /* ---------- geometry ---------- */
+  const DESIGN = 320;
+  // two canal routes, both authored in the same 320 design square:
+  // diag  — ทแยงแบบ make-final.mjs (FINAL)
+  // bend  — หักมุมแบบสำรวจ + คลองแยก แบบ make-brand-v3.mjs (v3/v4)
+  const ROUTES = {
+    diag: { main: [[-260,724],[-40,392],[58,244],[150,200],[176,104],[274,52],[372,-96],[592,-428]], branch: null },
+    bend: { main: [[132,400],[132,268],[80,214],[80,132],[168,44],[168,-80]],
+            branch: [[76,176],[214,176],[268,122],[340,122]] },
+  };
+  const ROUTE_LABEL = { diag: "ทแยง (FINAL)", bend: "หักมุม + คลองแยก (v3/v4)" };
+  // header-mark shape, all live-adjustable
+  const SHAPE = { n: 5, gap: 6, canal: 32, gutter: 13, branchK: 0.58, route: "diag", clip: false };
+  const REACH = ROUTES.diag.main;   // the icon lane's default route reference
+
+  function bandPolygon(pts, width) {
+    const w = width / 2;
+    const normal = (i) => {
+      const a = pts[i], b = pts[i + 1];
+      const dx = b[0]-a[0], dy = b[1]-a[1], L = Math.hypot(dx,dy) || 1;
+      return [-dy/L, dx/L];
+    };
+    const left = [], right = [];
+    for (let i = 0; i < pts.length; i++) {
+      let nx, ny;
+      if (i === 0) [nx,ny] = normal(0);
+      else if (i === pts.length - 1) [nx,ny] = normal(pts.length - 2);
+      else {
+        const [ax,ay] = normal(i-1), [bx,by] = normal(i);
+        let mx = ax+bx, my = ay+by;
+        const L = Math.hypot(mx,my) || 1; mx /= L; my /= L;
+        const scale = Math.min(4, 1 / Math.max(0.25, mx*ax + my*ay));
+        nx = mx*scale; ny = my*scale;
+      }
+      left.push([pts[i][0]+nx*w, pts[i][1]+ny*w]);
+      right.push([pts[i][0]-nx*w, pts[i][1]-ny*w]);
+    }
+    return left.concat(right.reverse());
+  }
+  // the mark, centred on (cx,cy) at a given size — rebuilt live from SHAPE
+  function drawMark(ctx, cx, cy, size) {
+    const s = size / DESIGN;
+    const X = p => cx + (p[0] - DESIGN/2) * s;
+    const Y = p => cy + (p[1] - DESIGN/2) * s;
+
+    const tile = (DESIGN - SHAPE.gap * (SHAPE.n - 1)) / SHAPE.n;
+    const pos = Array.from({ length: SHAPE.n }, (_, i) => i * (tile + SHAPE.gap));
+    ctx.fillStyle = C.land;
+    for (const ty of pos) for (const tx of pos) {
+      ctx.fillRect(X([tx,ty]), Y([tx,ty]), tile*s, tile*s);
+    }
+    const poly = (points, fill) => {
+      ctx.beginPath();
+      points.forEach((p,i) => i ? ctx.lineTo(X(p),Y(p)) : ctx.moveTo(X(p),Y(p)));
+      ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
+    };
+    const route = ROUTES[SHAPE.route];
+    const bw = SHAPE.canal * SHAPE.branchK;
+    if (SHAPE.clip) {                      // แม่น้ำไม่เกินขอบโลโก้
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(X([0,0]), Y([0,0]), DESIGN * s, DESIGN * s);
+      ctx.clip();
+    }
+    if (route.branch) poly(bandPolygon(route.branch, bw + SHAPE.gutter * 2), C.bank);
+    poly(bandPolygon(route.main, SHAPE.canal + SHAPE.gutter * 2), C.bank);
+    if (route.branch) poly(bandPolygon(route.branch, bw), C.water);
+    poly(bandPolygon(route.main, SHAPE.canal), C.water);
+    if (SHAPE.clip) ctx.restore();
+  }
+
+  /* ---------- wordmark (glyph paths from make-final.mjs) ---------- */
+  const G = {
+    C:  [[[92,22],[58,6],[22,22],[10,70],[22,118],[58,134],[92,118]]],
+    A:  [[[6,140],[50,6],[94,140]], [[26,92],[74,92]]],
+    N:  [[[10,140],[10,6],[90,140],[90,6]]],
+    L:  [[[12,6],[12,140],[88,140]]],
+    G:  [[[92,22],[58,6],[22,22],[10,70],[22,118],[58,134],[92,116],[92,76],[62,76]]],
+    R:  [[[12,140],[12,6],[66,6],[88,26],[88,56],[66,74],[12,74]], [[52,74],[92,140]]],
+    I:  [[[50,6],[50,140]]],
+    D:  [[[12,140],[12,6],[62,6],[92,40],[92,106],[62,140],[12,140]]],
+  };
+  // every character the hand-drawn glyph set covers
+  const drawable = (str) => [...str.toUpperCase()].every(ch => ch === " " || G[ch]);
+
+  // glyphs are authored on a 0..140 body; caps run from y=6 to y=140
+  const CAP_TOP = 6, CAP_BOT = 140;
+
+  function wordGlyph(ctx, str, x, y, s, adv, weight, color) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = weight * s;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    let cx = x;
+    for (const ch of str.toUpperCase()) {
+      if (G[ch]) for (const path of G[ch]) {
+        ctx.beginPath();
+        path.forEach((p,i) => {
+          const px = cx + p[0]*s, py = y + p[1]*s;
+          i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
+        });
+        ctx.stroke();
+      }
+      cx += adv;
+    }
+    ctx.restore();
+  }
+
+  // fallback for text the glyph set cannot draw: Space Grotesk, matched to the
+  // same cap height and total width so the layout does not shift
+  function wordFont(ctx, str, x, y, s, adv, weight, color, count) {
+    const cap = (CAP_BOT - CAP_TOP) * s;          // cap height in canvas units
+    const size = cap / 0.70;                      // Space Grotesk cap-height ratio
+    const target = adv * (count - 1) + 100 * s;   // the width the glyph line would occupy
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.textBaseline = "alphabetic";
+    ctx.font = `700 ${size}px "Space Grotesk", "Helvetica Neue", Arial, sans-serif`;
+    const track = str.length > 1
+      ? Math.max(0, (target - ctx.measureText(str).width) / (str.length - 1))
+      : 0;
+    let cx = x;
+    for (const ch of str) {
+      ctx.fillText(ch, cx, y + CAP_BOT * s);
+      cx += ctx.measureText(ch).width + track;
+    }
+    ctx.restore();
+  }
+
+  function word(ctx, str, x, y, s, adv, weight, color, slots) {
+    if (!str) return;
+    if (drawable(str)) wordGlyph(ctx, str, x, y, s, adv, weight, color);
+    else wordFont(ctx, str, x, y, s, adv, weight, color, slots);
+  }
+
+  /* ---------- Grid BG: selectable background patterns ---------- */
+  const BGG = { on: false, mode: "room", n: 14, depth: 0.42, rings: 9,
+                alpha: 0.45, color: "#1C2A30", seed: 7,
+                scale: 1, ox: 0, oy: 0 };
+  const BG_MODES = {
+    room:   "ห้องเปอร์สเปกทีฟ",
+    wave:   "ผืนคลื่น 3D",
+    topo:   "เส้นชั้นความสูง",
+    plexus: "โครงข่ายจุด",
+    worldmap: "แผนที่โลก",
+    flat:   "ตารางแบน",
+    iso:    "ไอโซเมตริก",
+    dots:   "จุดดอท",
+  };
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  // 2-octave value noise on a seeded lattice — deterministic, so exports match previews
+  function makeNoise(seed) {
+    const rng = mulberry32(seed), lat = new Map();
+    const at = (ix, iy) => {
+      const k = ix * 3119 + iy * 7919;
+      if (!lat.has(k)) lat.set(k, mulberry32((seed ^ k) >>> 0)());
+      return lat.get(k);
+    };
+    const smooth = t => t * t * (3 - 2 * t);
+    const layer = (x, y) => {
+      const ix = Math.floor(x), iy = Math.floor(y);
+      const fx = smooth(x - ix), fy = smooth(y - iy);
+      const a = at(ix, iy), b = at(ix + 1, iy), c = at(ix, iy + 1), d = at(ix + 1, iy + 1);
+      return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+    };
+    return (x, y) => 0.65 * layer(x, y) + 0.35 * layer(x * 2 + 17.3, y * 2 + 9.1);
+  }
+
+  const BG_W = 4096, BG_H = 2304;
+
+  /* ---- world-map plexus: coarse continent outlines in lon/lat ---- */
+  const CONTINENTS = [
+    // North America — west coast, Baja, Central America, Gulf, Florida, east coast, Hudson Bay, arctic
+    [[-165,65],[-155,58],[-140,60],[-132,56],[-125,48],[-122,40],[-117,33],[-113,29],[-110,24],
+     [-105,20],[-97,16],[-92,15],[-88,16],[-83,9],[-79,9],[-84,13],[-88,18],[-90,21],[-84,22],
+     [-81,25],[-80,27],[-82,31],[-76,35],[-74,40],[-70,42],[-65,44],[-60,46],[-53,47],[-56,52],
+     [-60,55],[-64,60],[-70,60],[-78,58],[-82,55],[-85,60],[-82,64],[-90,66],[-95,68],[-105,68],
+     [-115,69],[-125,70],[-135,69],[-148,70],[-160,68]],
+    // Greenland
+    [[-53,60],[-43,60],[-38,65],[-22,70],[-18,76],[-30,82],[-55,82],[-60,76],[-53,70]],
+    // South America
+    [[-80,9],[-75,11],[-70,12],[-62,10],[-55,6],[-50,0],[-44,-3],[-37,-5],[-35,-9],[-39,-14],
+     [-40,-20],[-48,-25],[-53,-30],[-58,-34],[-62,-39],[-65,-45],[-69,-50],[-72,-54],[-75,-50],
+     [-73,-44],[-72,-38],[-71,-30],[-70,-20],[-75,-14],[-77,-8],[-80,-3],[-81,4]],
+    // Africa
+    [[-17,15],[-16,20],[-13,27],[-9,32],[-5,35],[0,36],[10,37],[11,34],[19,32],[25,32],[32,31],
+     [34,28],[37,22],[40,15],[43,11],[51,12],[46,5],[41,-2],[40,-10],[36,-18],[33,-26],[27,-33],
+     [20,-35],[17,-33],[15,-27],[12,-18],[13,-12],[9,-2],[8,4],[3,6],[-4,5],[-8,4],[-13,9]],
+    // Eurasia — Iberia, Scandinavia, Siberia, Kamchatka, China, SE Asia, India, Arabia, Anatolia, Italy
+    [[-9,37],[-9,43],[-2,44],[-2,48],[3,51],[8,54],[8,57],[12,56],[10,59],[5,58],[5,62],[12,65],
+     [18,69],[25,71],[30,70],[35,66],[40,66],[45,68],[55,68],[60,70],[70,72],[80,72],[90,73],
+     [100,72],[110,73],[120,72],[130,71],[140,72],[150,70],[160,68],[170,66],[178,65],[170,60],
+     [162,58],[160,53],[156,51],[152,59],[142,54],[135,44],[130,42],[127,39],[122,37],[120,32],
+     [115,23],[109,18],[106,10],[103,1],[100,4],[98,10],[95,16],[91,22],[88,21],[86,19],[80,15],
+     [77,8],[73,15],[70,20],[66,25],[60,25],[57,20],[52,13],[48,14],[43,12],[35,28],[35,36],
+     [30,36],[27,37],[22,40],[19,40],[16,38],[15,41],[12,44],[8,44],[4,43],[0,39],[-2,36],[-6,36]],
+    // Australia
+    [[113,-25],[114,-21],[122,-17],[126,-14],[130,-12],[132,-11],[136,-12],[135,-15],[140,-17],
+     [142,-11],[145,-15],[147,-19],[150,-23],[153,-27],[152,-32],[150,-37],[146,-39],[140,-38],
+     [136,-35],[131,-32],[124,-33],[118,-35],[115,-33]],
+    // British Isles
+    [[-5,50],[-6,54],[-5,58],[-3,58],[-1,53],[1,51]],
+    // Japan
+    [[130,31],[132,34],[136,35],[140,36],[141,39],[142,42],[144,43],[141,44],[139,41],[136,37],
+     [133,34],[130,33]],
+    // Madagascar
+    [[44,-25],[43,-20],[46,-14],[50,-15],[49,-19],[47,-25]],
+  ];
+  function bgWorldMap(ctx) {
+    const rng = mulberry32(BGG.seed * 601 + 11);
+    const inside = (x, y, poly) => {
+      let hit = false;
+      for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i], [xj, yj] = poly[j];
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) hit = !hit;
+      }
+      return hit;
+    };
+    // equirectangular: lon -180..180, lat 78..-56, fit to the canvas
+    const px = (lon, lat) => [
+      BG_W * 0.03 + (lon + 180) / 360 * BG_W * 0.94,
+      BG_H * 0.04 + (78 - lat) / 134 * BG_H * 0.92,
+    ];
+    const pts = [];
+    for (const poly of CONTINENTS) {
+      let x0 = 180, x1 = -180, y0 = 90, y1 = -90;
+      for (const [x, y] of poly) {
+        x0 = Math.min(x0, x); x1 = Math.max(x1, x);
+        y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+      }
+      const want = Math.max(6, Math.round(BGG.n * 2.2 * (x1 - x0) * (y1 - y0) / 900));
+      let got = 0, tries = 0;
+      while (got < want && tries++ < want * 30) {
+        const lon = x0 + rng() * (x1 - x0), lat = y0 + rng() * (y1 - y0);
+        if (inside(lon, lat, poly)) { pts.push(px(lon, lat)); got++; }
+      }
+      // coasts: subdivide every outline edge (~6° steps) with light jitter,
+      // so the shoreline reads as a dense chain of nodes
+      for (let i = 0; i < poly.length; i++) {
+        const a = poly[i], b = poly[(i + 1) % poly.length];
+        const steps = Math.max(1, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / 6));
+        for (let k = 0; k < steps; k++) {
+          const t = k / steps;
+          pts.push(px(a[0] + (b[0] - a[0]) * t + (rng() - 0.5) * 1.6,
+                      a[1] + (b[1] - a[1]) * t + (rng() - 0.5) * 1.6));
+        }
+      }
+    }
+    const reach = BG_W / Math.sqrt(pts.length) * (0.75 + BGG.depth);
+    for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const d = Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]);
+      if (d > reach) continue;
+      ctx.globalAlpha = BGG.alpha * (1 - d / reach);
+      ctx.beginPath(); ctx.moveTo(pts[i][0], pts[i][1]); ctx.lineTo(pts[j][0], pts[j][1]); ctx.stroke();
+    }
+    ctx.globalAlpha = BGG.alpha;
+    ctx.fillStyle = BGG.color;
+    for (const [x, y] of pts) { ctx.beginPath(); ctx.arc(x, y, 6, 0, 7); ctx.fill(); }
+  }
+
+  function bgWave(ctx) {
+    const noise = makeNoise(BGG.seed);
+    const cols = BGG.n * 4, rows = Math.max(4, BGG.rings * 2);
+    const amp = BG_H * 0.22 * (BGG.depth / 0.42);
+    const topY = BG_H * 0.30;
+    const pt = (i, j) => {
+      const u = i / cols, v = j / rows;
+      const spread = 0.55 + 0.45 * v;                       // rows widen toward the front
+      const x = BG_W / 2 + (u - 0.5) * BG_W * 1.15 * spread;
+      const y = topY + v * v * (BG_H - topY) * 0.95 + (noise(u * 6, v * 4) - 0.5) * amp * (0.4 + v);
+      return [x, y];
+    };
+    for (let j = 0; j <= rows; j++) {
+      ctx.globalAlpha = BGG.alpha * (0.25 + 0.75 * (j / rows));
+      ctx.beginPath();
+      for (let i = 0; i <= cols; i++) { const [x, y] = pt(i, j); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke();
+    }
+    for (let i = 0; i <= cols; i++) {
+      ctx.globalAlpha = BGG.alpha * 0.6;
+      ctx.beginPath();
+      for (let j = 0; j <= rows; j++) { const [x, y] = pt(i, j); j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke();
+    }
+  }
+
+  function bgTopo(ctx) {
+    const noise = makeNoise(BGG.seed);
+    const gx = 128, gy = Math.round(gx * BG_H / BG_W);
+    const sx = BG_W / gx, sy = BG_H / gy;
+    const freq = BGG.n / 3.2;
+    const F = [];
+    for (let j = 0; j <= gy; j++) for (let i = 0; i <= gx; i++)
+      F[j * (gx + 1) + i] = noise(i / gx * freq, j / gy * freq * BG_H / BG_W);
+    const f = (i, j) => F[j * (gx + 1) + i];
+    const levels = Math.max(3, BGG.rings);
+    ctx.globalAlpha = BGG.alpha;
+    for (let L = 1; L <= levels; L++) {
+      const th = L / (levels + 1);
+      ctx.lineWidth = (L % 4 === 0 ? 5 : 2.5);              // every 4th contour is an index line
+      ctx.beginPath();
+      for (let j = 0; j < gy; j++) for (let i = 0; i < gx; i++) {
+        const a = f(i, j), b = f(i + 1, j), c = f(i + 1, j + 1), d = f(i, j + 1);
+        const x0 = i * sx, y0 = j * sy;
+        const e = [];                                        // edge crossings of this cell
+        if ((a < th) !== (b < th)) e.push([x0 + sx * (th - a) / (b - a), y0]);
+        if ((b < th) !== (c < th)) e.push([x0 + sx, y0 + sy * (th - b) / (c - b)]);
+        if ((d < th) !== (c < th)) e.push([x0 + sx * (th - d) / (c - d), y0 + sy]);
+        if ((a < th) !== (d < th)) e.push([x0, y0 + sy * (th - a) / (d - a)]);
+        for (let k = 0; k + 1 < e.length; k += 2) {
+          ctx.moveTo(e[k][0], e[k][1]); ctx.lineTo(e[k + 1][0], e[k + 1][1]);
+        }
+      }
+      ctx.stroke();
+    }
+  }
+
+  function bgPlexus(ctx) {
+    const rng = mulberry32(BGG.seed * 1013 + 5);
+    const count = BGG.n * 14;
+    const pts = Array.from({ length: count }, () => [rng() * BG_W, rng() * BG_H]);
+    const reach = BG_W / Math.sqrt(count) * (1.1 + BGG.depth);
+    for (let i = 0; i < count; i++) for (let j = i + 1; j < count; j++) {
+      const dx = pts[i][0] - pts[j][0], dy = pts[i][1] - pts[j][1];
+      const d = Math.hypot(dx, dy);
+      if (d > reach) continue;
+      ctx.globalAlpha = BGG.alpha * (1 - d / reach);
+      ctx.beginPath(); ctx.moveTo(pts[i][0], pts[i][1]); ctx.lineTo(pts[j][0], pts[j][1]); ctx.stroke();
+    }
+    ctx.globalAlpha = BGG.alpha;
+    ctx.fillStyle = BGG.color;
+    for (const [x, y] of pts) { ctx.beginPath(); ctx.arc(x, y, 7, 0, 7); ctx.fill(); }
+  }
+
+  function bgFlat(ctx) {
+    const step = BG_W / (BGG.n * 2);
+    ctx.globalAlpha = BGG.alpha;
+    ctx.beginPath();
+    for (let x = 0; x <= BG_W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, BG_H); }
+    for (let y = 0; y <= BG_H; y += step) { ctx.moveTo(0, y); ctx.lineTo(BG_W, y); }
+    ctx.stroke();
+  }
+
+  function bgIso(ctx) {
+    const step = BG_W / (BGG.n * 2), k = Math.tan(Math.PI / 6);  // 30° iso diagonals
+    ctx.globalAlpha = BGG.alpha;
+    ctx.beginPath();
+    for (let x = -BG_H / k; x <= BG_W + BG_H / k; x += step) {
+      ctx.moveTo(x, 0); ctx.lineTo(x + BG_H / k, BG_H);
+      ctx.moveTo(x, 0); ctx.lineTo(x - BG_H / k, BG_H);
+    }
+    ctx.stroke();
+  }
+
+  function bgDots(ctx) {
+    const step = BG_W / (BGG.n * 2), r = 3 + BGG.depth * 10;
+    ctx.globalAlpha = BGG.alpha;
+    ctx.fillStyle = BGG.color;
+    for (let y = step / 2; y < BG_H; y += step) for (let x = step / 2; x < BG_W; x += step) {
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+    }
+  }
+
+  function drawBgGrid(ctx) {
+    if (!BGG.on) return;
+    ctx.save();
+    // size + position: scale about the canvas centre, then shift by % of the frame
+    ctx.translate(BG_W * (0.5 + BGG.ox), BG_H * (0.5 + BGG.oy));
+    ctx.scale(BGG.scale, BGG.scale);
+    ctx.translate(-BG_W / 2, -BG_H / 2);
+    drawBgPattern(ctx);
+    ctx.restore();
+  }
+
+  function drawBgPattern(ctx) {
+    if (BGG.mode !== "room") {
+      ctx.save();
+      ctx.strokeStyle = BGG.color;
+      ctx.lineWidth = 3;
+      ({ wave: bgWave, topo: bgTopo, plexus: bgPlexus, worldmap: bgWorldMap,
+         flat: bgFlat, iso: bgIso, dots: bgDots })[BGG.mode]?.(ctx);
+      ctx.restore();
+      return;
+    }
+    const W = 4096, H = 2304, cx = W / 2, cy = H / 2;
+    const bw = W * BGG.depth, bh = H * BGG.depth;
+    const bx = cx - bw / 2, by = cy - bh / 2;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    // world-uniform depth mapped to screen: cells compress toward the back wall
+    const P = 3, depthT = (u) => (P * u) / (1 + (P - 1) * u);
+
+    ctx.save();
+    ctx.strokeStyle = BGG.color;
+    ctx.lineJoin = "miter";
+
+    // depth rings — rectangles marching toward the back wall, fading as they go
+    for (let j = 1; j <= BGG.rings; j++) {
+      const t = depthT(j / BGG.rings);
+      ctx.globalAlpha = BGG.alpha * (1 - 0.55 * t);
+      ctx.lineWidth = 4 * (1 - 0.55 * t);
+      ctx.strokeRect(lerp(0, bx, t), lerp(0, by, t), lerp(W, bw, t), lerp(H, bh, t));
+    }
+
+    // rays from the frame edges to the back-wall rectangle
+    const nx = BGG.n, ny = Math.max(2, Math.round(BGG.n * H / W));
+    ctx.globalAlpha = BGG.alpha;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    for (let i = 0; i <= nx; i++) {
+      const u = i / nx;
+      ctx.moveTo(W * u, 0); ctx.lineTo(bx + bw * u, by);           // ceiling
+      ctx.moveTo(W * u, H); ctx.lineTo(bx + bw * u, by + bh);      // floor
+    }
+    for (let i = 0; i <= ny; i++) {
+      const u = i / ny;
+      ctx.moveTo(0, H * u); ctx.lineTo(bx, by + bh * u);           // left wall
+      ctx.moveTo(W, H * u); ctx.lineTo(bx + bw, by + bh * u);      // right wall
+    }
+    ctx.stroke();
+
+    // back-wall grid, faintest of all
+    ctx.globalAlpha = BGG.alpha * 0.4;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let i = 1; i < nx; i++) { const x = bx + bw * i / nx; ctx.moveTo(x, by); ctx.lineTo(x, by + bh); }
+    for (let i = 1; i < ny; i++) { const y = by + bh * i / ny; ctx.moveTo(bx, y); ctx.lineTo(bx + bw, y); }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  /* ---------- header composition (make-final.mjs, header mode) ---------- */
+  let TYPE_GAP = 330, MARK = 1010;
+  let TEXT1 = "CANAL", TEXT2 = "GRID";
+
+  function drawHeader(ctx, W, H) {
+    const k = W / 4096;                       // everything below is authored at 4096 x 2304
+    ctx.setTransform(k, 0, 0, k, 0, 0);
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, 4096, 2304);
+    drawBgGrid(ctx);
+
+    const CY = 2304/2, MX = 1240;
+    drawMark(ctx, MX, CY, MARK);
+
+    const TX = MX + MARK/2 + TYPE_GAP;
+    const n1 = Math.max(1, TEXT1.length), n2 = Math.max(1, TEXT2.length);
+    const avail = 4096 - TX - 180;
+
+    // line 1 keeps its 1.95 scale until the text is long enough to run off the canvas
+    const s1 = Math.min(1.95, (avail - 58 * (n1 - 1)) / (100 * n1));
+    const adv1 = 100 * s1 + 58;
+    const w1 = adv1 * (n1 - 1) + 100 * s1;
+
+    // line 2 is set to the exact width of line 1, shrinking if the letters would collide
+    const s2 = Math.min(1.12, w1 / (100 * (1 + 0.62 * (n2 - 1))));
+    const adv2 = n2 > 1 ? (w1 - 100 * s2) / (n2 - 1) : 0;
+
+    if (TEXT1) word(ctx, TEXT1, TX, CY - 250, s1, adv1, 21, C.type,  n1);
+    if (TEXT2) word(ctx, TEXT2, TX, CY + 84,  s2, adv2, 18, C.type2, n2);
+    ctx.setTransform(1,0,0,1,0,0);
+  }
+
+  /* ---------- icon lane ----------
+     The header mark is 25 loose parcels on a dark field. A circular avatar crops
+     the corners off, so at 32-48 px the parcels turn to mush and the dark field
+     eats most of the disc. The icon is therefore drawn the other way round: the
+     green is the ground and bleeds past every edge, the grid is cut into it as
+     dark lines, and the canal is widened until it still reads once masked. */
+  const ICON = { n: 3, line: 18, canal: 76, bank: 0, zoom: 1.40, padded: false };
+
+  function drawIconMark(ctx, size, o) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, size, size);
+
+    ctx.save();
+    if (o.padded) {                       // square slots keep a margin of background
+      const pad = Math.round(size * 0.10), r = Math.round(size * 0.20);
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(pad, pad, size - pad*2, size - pad*2, r)
+                    : ctx.rect(pad, pad, size - pad*2, size - pad*2);
+      ctx.clip();
+    }
+
+    // green ground, full bleed
+    ctx.fillStyle = C.land;
+    ctx.fillRect(0, 0, size, size);
+
+    // design space: 320 units mapped to `zoom` x the frame, so the lattice runs off
+    const s = (size * o.zoom) / DESIGN;
+    const X = p => size/2 + (p[0] - DESIGN/2) * s;
+    const Y = p => size/2 + (p[1] - DESIGN/2) * s;
+
+    // grid cut as lines, not tiles — nothing to ragged out at the circle's edge
+    const step = DESIGN / o.n, reach = Math.ceil(o.n * o.zoom) + 2;
+    ctx.fillStyle = C.bank;
+    const lw = o.line * s;
+    for (let i = -reach; i <= reach; i++) {
+      const c0 = i * step - o.line / 2;
+      ctx.fillRect(X([c0, 0]), 0, lw, size);
+      ctx.fillRect(0, Y([0, c0]), size, lw);
+    }
+
+    const poly = (points, fill) => {
+      ctx.beginPath();
+      points.forEach((p, i) => i ? ctx.lineTo(X(p), Y(p)) : ctx.moveTo(X(p), Y(p)));
+      ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
+    };
+    const route = ROUTES[SHAPE.route], bw = o.canal * SHAPE.branchK;
+    if (o.bank > 0) {
+      if (route.branch) poly(bandPolygon(route.branch, bw + o.bank * 2), C.bank);
+      poly(bandPolygon(route.main, o.canal + o.bank * 2), C.bank);
+    }
+    if (route.branch) poly(bandPolygon(route.branch, bw), C.water);
+    poly(bandPolygon(route.main, o.canal), C.water);
+    ctx.restore();
+  }
+
+  const drawIcon = (ctx, size) => drawIconMark(ctx, size, ICON);
+
+  /* ---------- render + export ---------- */
+  const preview = document.getElementById("preview");
+  const status = document.getElementById("status");
+
+  function renderPreview() {
+    const stage = preview.parentElement;
+    const cssW = Math.max(320, stage.clientWidth - 38);   // minus the stage padding
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    preview.width = Math.round(cssW * dpr);
+    preview.height = Math.round(preview.width * 2304 / 4096);
+    drawHeader(preview.getContext("2d"), preview.width, preview.height);
+    touch();                                   // every change is autosaved
+  }
+
+  /* ---------- 24-bit PNG encoder (no alpha channel at all) ----------
+     canvas.toBlob always writes RGBA (colour type 6); stores that demand a
+     non-transparent 24-bit PNG can reject that, so the truecolour bytes are
+     re-encoded here — CompressionStream("deflate") emits exactly the zlib
+     stream an IDAT chunk wants. */
+  const CRC_T = (() => {
+    const t = new Int32Array(256);
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; t[n] = c; }
+    return t;
+  })();
+  const crc32 = (b) => { let c = -1; for (let i = 0; i < b.length; i++) c = CRC_T[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; };
+
+  function chunk(type, data) {
+    const out = new Uint8Array(12 + data.length), dv = new DataView(out.buffer);
+    dv.setUint32(0, data.length);
+    for (let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);
+    out.set(data, 8);
+    dv.setUint32(8 + data.length, crc32(out.subarray(4, 8 + data.length)));
+    return out;
+  }
+
+  async function encodePNG24(canvas) {
+    const W = canvas.width, H = canvas.height;
+    const px = canvas.getContext("2d").getImageData(0, 0, W, H).data;
+    const stride = W * 3 + 1, raw = new Uint8Array(H * stride);
+    for (let y = 0; y < H; y++) {
+      raw[y * stride] = 2;                                  // Up filter
+      const o = y * stride + 1, cur = y * W * 4, prev = (y - 1) * W * 4;
+      for (let x = 0; x < W; x++) for (let k = 0; k < 3; k++) {
+        const v = px[cur + x * 4 + k] - (y === 0 ? 0 : px[prev + x * 4 + k]);
+        raw[o + x * 3 + k] = v & 255;
+      }
+    }
+    const zlib = new Uint8Array(await new Response(
+      new Blob([raw]).stream().pipeThrough(new CompressionStream("deflate"))
+    ).arrayBuffer());
+
+    const ihdr = new Uint8Array(13), dv = new DataView(ihdr.buffer);
+    dv.setUint32(0, W); dv.setUint32(4, H);
+    ihdr[8] = 8; ihdr[9] = 2;                               // 8 bit, truecolour RGB
+    return new Blob([
+      new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      chunk("IHDR", ihdr), chunk("IDAT", zlib), chunk("IEND", new Uint8Array(0)),
+    ], { type: "image/png" });
+  }
+
+  function download(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    const mb = blob.size / 1024 / 1024;
+    status.textContent = filename + " — " + mb.toFixed(2) + " MB" +
+      (blob.size > LIMIT_1MB ? " ⚠ เกิน 1 MB (สเปกสโตร์)" : "");
+  }
+
+  /* ---- store spec: 4096×2304, at most 1 MB ---- */
+  const LIMIT_1MB = 1024 * 1024;
+  // PNG 24-bit first; if the pattern makes it heavy, walk the JPG quality down
+  async function fitUnder1MB(canvas) {
+    let blob = await blobOf(canvas, "png");
+    if (blob.size <= LIMIT_1MB) return { blob, ext: "png", note: "PNG 24-bit" };
+    for (const q of [0.92, 0.88, 0.84, 0.8, 0.75, 0.7, 0.62, 0.55, 0.48, 0.4]) {
+      blob = await toBlob(canvas, "image/jpeg", q);
+      if (blob.size <= LIMIT_1MB) return { blob, ext: "jpg", note: "JPG q" + Math.round(q * 100) };
+    }
+    return { blob, ext: "jpg", note: "JPG q40 — ยังเกิน ลองลดความถี่ลาย BG" };
+  }
+
+  const toBlob = (canvas, type, q) =>
+    new Promise(res => canvas.toBlob(res, type, q));
+
+  async function blobOf(canvas, format) {
+    if (format === "jpg") return toBlob(canvas, "image/jpeg", 0.95);
+    try { return await encodePNG24(canvas); }               // true 24-bit, no alpha
+    catch { return toBlob(canvas, "image/png"); }
+  }
+
+  async function save(canvas, base, format) {
+    status.textContent = "กำลังเข้ารหัส…";
+    download(await blobOf(canvas, format), base + "." + (format === "jpg" ? "jpg" : "png"));
+  }
+
+  function headerCanvas(W) {
+    const c = document.createElement("canvas");
+    c.width = W; c.height = Math.round(W * 2304 / 4096);
+    drawHeader(c.getContext("2d"), c.width, c.height);
+    return c;
+  }
+  const exportHeader = (W, fmt) => {
+    const c = headerCanvas(W);
+    save(c, "canal-grid-header-" + c.width + "x" + c.height, fmt);
+  };
+
+  document.getElementById("dl").onclick = () => exportHeader(4096, "png");
+  document.getElementById("dlJpg").onclick = () => exportHeader(4096, "jpg");
+  document.getElementById("dlStore").onclick = async () => {
+    status.textContent = "กำลังเข้ารหัสให้ไม่เกิน 1 MB…";
+    const { blob, ext, note } = await fitUnder1MB(headerCanvas(4096));
+    download(blob, "canal-grid-header-4096x2304-store." + ext);
+    status.textContent += " · " + note;
+  };
+  document.getElementById("dl2x").onclick = () => exportHeader(1024, "png");
+  function iconCanvas(size, padded) {
+    const c = document.createElement("canvas");
+    c.width = c.height = size;
+    drawIconMark(c.getContext("2d"), size, { ...ICON, padded });
+    return c;
+  }
+  document.getElementById("dlIcon").onclick = () =>
+    save(iconCanvas(512, false), "canal-grid-icon-512", "png");
+  document.getElementById("dlIcon1024").onclick = () =>
+    save(iconCanvas(1024, false), "canal-grid-icon-1024", "png");
+  document.getElementById("dlIconSq").onclick = () =>
+    save(iconCanvas(512, true), "canal-grid-icon-512-padded", "png");
+
+  /* ---------- icon previews at the sizes that actually break ---------- */
+  const ICON_SIZES = [
+    { px: 176, mask: "circle", label: "176 · avatar" },
+    { px: 96,  mask: "circle", label: "96" },
+    { px: 48,  mask: "circle", label: "48" },
+    { px: 32,  mask: "circle", label: "32" },
+    { px: 96,  mask: "square", label: "96 · square" },
+  ];
+  const iconRow = document.getElementById("iconRow");
+  const iconCanvases = ICON_SIZES.map(spec => {
+    const item = document.createElement("div");
+    item.className = "icon-item";
+    item.dataset.mask = spec.mask;
+    const cv = document.createElement("canvas");
+    const cap = document.createElement("span");
+    cap.textContent = spec.label;
+    item.append(cv, cap);
+    iconRow.appendChild(item);
+    return { cv, spec };
+  });
+
+  function renderIcons() {
+    const dpr = Math.min(3, window.devicePixelRatio || 1);
+    for (const { cv, spec } of iconCanvases) {
+      cv.width = cv.height = Math.round(spec.px * dpr);
+      cv.style.width = cv.style.height = spec.px + "px";
+      drawIconMark(cv.getContext("2d"), cv.width,
+        { ...ICON, padded: spec.mask === "square" });
+    }
+    touch();
+  }
+
+  const iconSlider = (id, vid, key, scale) => {
+    const el = document.getElementById(id), out = document.getElementById(vid);
+    el.oninput = () => {
+      ICON[key] = scale ? Number(el.value) * scale : Number(el.value);
+      out.textContent = el.value;
+      renderIcons();
+    };
+  };
+  iconSlider("icN", "icNV", "n");
+  iconSlider("icLine", "icLineV", "line");
+  iconSlider("icCanal", "icCanalV", "canal");
+  iconSlider("icBank", "icBankV", "bank");
+  iconSlider("icZoom", "icZoomV", "zoom", 0.01);
+
+  const ICON_PRESETS = [
+    { name: "3 ช่อง · คลองหนา", v: { n: 3, line: 18, canal: 76, bank: 0, zoom: 1.40 } },
+    { name: "2 ช่อง · ใหญ่สุด",  v: { n: 2, line: 22, canal: 92, bank: 0, zoom: 1.25 } },
+    { name: "4 ช่อง · มีตลิ่ง",  v: { n: 4, line: 12, canal: 62, bank: 14, zoom: 1.55 } },
+    { name: "5 ช่อง (แบบเดิม)", v: { n: 5, line: 8,  canal: 42, bank: 0, zoom: 1.70 } },
+  ];
+  const iconPresetBox = document.getElementById("iconPresets");
+  for (const p of ICON_PRESETS) {
+    const b = document.createElement("button");
+    b.textContent = p.name;
+    b.onclick = () => {
+      Object.assign(ICON, p.v);
+      for (const [id, key, scale] of [["icN","n",1],["icLine","line",1],
+           ["icCanal","canal",1],["icBank","bank",1],["icZoom","zoom",100]]) {
+        const el = document.getElementById(id);
+        el.value = ICON[key] * scale;
+        document.getElementById(id + "V").textContent = el.value;
+      }
+      renderIcons();
+    };
+    iconPresetBox.appendChild(b);
+  }
+
+  const slider = (id, vid, set) => {
+    const el = document.getElementById(id), out = document.getElementById(vid);
+    el.oninput = () => { set(Number(el.value)); out.textContent = el.value; renderPreview(); };
+  };
+  slider("gapS", "gapV", v => TYPE_GAP = v);
+  slider("markS", "markV", v => MARK = v);
+
+  /* ---------- Grid BG controls ---------- */
+  const bgOnBtn = document.getElementById("bgOn");
+  const bgCol = document.getElementById("bgCol"), bgColHex = document.getElementById("bgColHex");
+  const bgModeBox = document.getElementById("bgModes");
+  function renderBgModes() {
+    bgModeBox.textContent = "";
+    for (const key of Object.keys(BG_MODES)) {
+      const b = document.createElement("button");
+      b.textContent = BG_MODES[key];
+      if (key === BGG.mode) { b.style.borderColor = "var(--land)"; b.style.color = "var(--land)"; }
+      b.onclick = () => { BGG.mode = key; if (!BGG.on) BGG.on = true; syncBgUI(); renderPreview(); };
+      bgModeBox.appendChild(b);
+    }
+  }
+  document.getElementById("bgSeed").onclick = () => {
+    BGG.seed = Math.floor(Math.random() * 1e6);
+    renderPreview();
+  };
+  function syncBgUI() {
+    renderBgModes();
+    bgOnBtn.textContent = BGG.on ? "ปิด Grid BG" : "เปิด Grid BG";
+    bgOnBtn.style.borderColor = BGG.on ? "var(--land)" : "";
+    bgOnBtn.style.color = BGG.on ? "var(--land)" : "";
+    bgCol.value = BGG.color; bgColHex.value = BGG.color.toUpperCase();
+    for (const [id, key, mult] of [["bgN","n",1],["bgDepth","depth",100],
+         ["bgRings","rings",1],["bgAlpha","alpha",100],
+         ["bgScale","scale",100],["bgOX","ox",100],["bgOY","oy",100]]) {
+      const el = document.getElementById(id);
+      el.value = Math.round(BGG[key] * mult);
+      document.getElementById(id + "V").textContent = el.value;
+    }
+  }
+  bgOnBtn.onclick = () => { BGG.on = !BGG.on; syncBgUI(); renderPreview(); };
+  bgCol.oninput = () => { BGG.color = bgCol.value; bgColHex.value = bgCol.value.toUpperCase(); renderPreview(); };
+  bgColHex.oninput = () => {
+    let v = bgColHex.value.trim();
+    if (v && v[0] !== "#") v = "#" + v;
+    if (!/^#[0-9a-f]{6}$/i.test(v)) return;
+    BGG.color = v; bgCol.value = v; renderPreview();
+  };
+  const bgSlider = (id, key, scale = 1) => {
+    const el = document.getElementById(id), out = document.getElementById(id + "V");
+    el.oninput = () => { BGG[key] = Number(el.value) * scale; out.textContent = el.value; renderPreview(); };
+  };
+  bgSlider("bgN", "n");
+  bgSlider("bgDepth", "depth", 0.01);
+  bgSlider("bgRings", "rings");
+  bgSlider("bgAlpha", "alpha", 0.01);
+  bgSlider("bgScale", "scale", 0.01);
+  bgSlider("bgOX", "ox", 0.01);
+  bgSlider("bgOY", "oy", 0.01);
+  syncBgUI();
+
+  /* ---------- header-mark shape ---------- */
+  const shapeSlider = (id, key, scale = 1) => {
+    const el = document.getElementById(id), out = document.getElementById(id + "V");
+    el.oninput = () => {
+      SHAPE[key] = Number(el.value) * scale;
+      out.textContent = el.value;
+      renderPreview(); renderIcons();
+    };
+  };
+  shapeSlider("shN", "n");
+  shapeSlider("shGap", "gap");
+  shapeSlider("shCanal", "canal");
+  shapeSlider("shGutter", "gutter");
+  shapeSlider("shBranch", "branchK", 0.01);
+
+  const routeBox = document.getElementById("routeBtns");
+  function renderRouteBtns() {
+    routeBox.textContent = "";
+    for (const key of Object.keys(ROUTES)) {
+      const b = document.createElement("button");
+      b.textContent = ROUTE_LABEL[key];
+      if (key === SHAPE.route) { b.style.borderColor = "var(--land)"; b.style.color = "var(--land)"; }
+      b.onclick = () => { SHAPE.route = key; renderRouteBtns(); renderPreview(); renderIcons(); };
+      routeBox.appendChild(b);
+    }
+  }
+  renderRouteBtns();
+
+  const clipBtn = document.getElementById("clipBtn");
+  function syncClipBtn() {
+    clipBtn.textContent = "แม่น้ำไม่เกินขอบ: " + (SHAPE.clip ? "เปิด" : "ปิด");
+    clipBtn.style.borderColor = SHAPE.clip ? "var(--land)" : "";
+    clipBtn.style.color = SHAPE.clip ? "var(--land)" : "";
+  }
+  clipBtn.onclick = () => { SHAPE.clip = !SHAPE.clip; syncClipBtn(); renderPreview(); };
+  syncClipBtn();
+
+  const syncShape = () => {
+    for (const [id, key, mult] of [["shN","n",1],["shGap","gap",1],["shCanal","canal",1],
+         ["shGutter","gutter",1],["shBranch","branchK",100]]) {
+      const el = document.getElementById(id);
+      el.value = Math.round(SHAPE[key] * mult);
+      document.getElementById(id + "V").textContent = el.value;
+    }
+    renderRouteBtns();
+    syncClipBtn();
+  };
+
+  /* ---------- colour fields ---------- */
+  const HEX = /^#[0-9a-f]{6}$/i;
+  const fields = document.getElementById("fields");
+  const swatches = {}, hexes = {};
+
+  for (const key of KEYS) {
+    const row = document.createElement("div");
+    row.className = "field";
+    row.innerHTML =
+      '<span class="name"></span>' +
+      '<input type="color">' +
+      '<input type="text" spellcheck="false" maxlength="7">';
+    row.children[0].textContent = LABEL[key];
+    const pick = row.children[1], hex = row.children[2];
+    swatches[key] = pick; hexes[key] = hex;
+    pick.value = C[key]; hex.value = C[key].toUpperCase();
+
+    pick.oninput = () => { C[key] = pick.value; hex.value = pick.value.toUpperCase(); refresh(false); };
+    hex.oninput = () => {
+      let v = hex.value.trim();
+      if (v && v[0] !== "#") v = "#" + v;
+      if (!HEX.test(v)) return;                 // wait until the user has typed a full hex
+      C[key] = v; pick.value = v; refresh(false);
+    };
+    hex.onblur = () => { hex.value = C[key].toUpperCase(); };
+    fields.appendChild(row);
+  }
+
+  /* ---------- presets ---------- */
+  const presetBox = document.getElementById("presets");
+  for (const p of PRESETS) {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.innerHTML = '<i style="background:' + p.c.land + '"></i>' +
+                  '<i style="background:' + p.c.water + '"></i><span></span>';
+    b.lastChild.textContent = p.name;
+    b.onclick = () => { Object.assign(C, p.c); refresh(true); };
+    presetBox.appendChild(b);
+  }
+
+  /* ---------- text ---------- */
+  const line1 = document.getElementById("line1"), line2 = document.getElementById("line2");
+  const typeHint = document.getElementById("typeHint");
+  const onText = () => {
+    TEXT1 = line1.value; TEXT2 = line2.value;
+    refresh(false);
+  };
+  line1.oninput = onText; line2.oninput = onText;
+
+  function refresh(syncInputs) {
+    if (syncInputs) for (const key of KEYS) {
+      swatches[key].value = C[key];
+      hexes[key].value = C[key].toUpperCase();
+    }
+    const s = snapshot();
+    delete s.savedAt;
+    document.getElementById("paletteOut").textContent = JSON.stringify(s, null, 2);
+
+    const custom = [TEXT1, TEXT2].filter(Boolean).filter(t => !drawable(t));
+    if (custom.length) {
+      typeHint.dataset.warn = "1";
+      typeHint.textContent =
+        "“" + custom.join("”, “") + "” มีตัวอักษรนอกชุดที่วาดมือไว้ (C A N L G R I D) — บรรทัดนั้นจะเรนเดอร์ด้วยฟอนต์ Space Grotesk แทน โดยคุมความสูงตัวพิมพ์ใหญ่และความกว้างให้เท่าเดิม";
+    } else {
+      delete typeHint.dataset.warn;
+      typeHint.textContent = "ทุกตัวอักษรอยู่ในชุดที่วาดมือไว้ — เรนเดอร์เป็นเส้นเรขาคณิตเหมือน make-final.mjs";
+    }
+    renderPreview();
+    renderIcons();
+  }
+
+  /* ================= state: autosave, named sets, one-button export ========= */
+
+  const STORE_LAST = "canalgrid.header.last";
+  const STORE_SETS = "canalgrid.header.sets";
+  const saveName   = document.getElementById("saveName");
+  const autosaveEl = document.getElementById("autosave");
+  const saveStatus = document.getElementById("saveStatus");
+
+  const SLIDERS = [                    // id, value key, multiplier for the input value
+    ["gapS",     () => TYPE_GAP, 1], ["markS", () => MARK, 1],
+    ["icN",      () => ICON.n, 1],   ["icLine", () => ICON.line, 1],
+    ["icCanal",  () => ICON.canal, 1], ["icBank", () => ICON.bank, 1],
+    ["icZoom",   () => ICON.zoom, 100],
+  ];
+
+  function snapshot() {
+    return {
+      format: "canal-grid/header",
+      version: 2,
+      name: saveName.value.trim() || "canal-grid",
+      savedAt: new Date().toISOString(),
+      colors: { ...C },
+      text: { line1: TEXT1, line2: TEXT2 },
+      header: { typeGap: TYPE_GAP, markSize: MARK },
+      shape: { ...SHAPE },
+      bgGrid: { ...BGG },
+      icon: { ...ICON },
+    };
+  }
+
+  function applySnapshot(s) {
+    if (!s || typeof s !== "object") return false;
+    for (const k of KEYS) if (HEX.test(s.colors?.[k] ?? "")) C[k] = s.colors[k];
+    if (typeof s.text?.line1 === "string") TEXT1 = line1.value = s.text.line1;
+    if (typeof s.text?.line2 === "string") TEXT2 = line2.value = s.text.line2;
+    if (Number.isFinite(s.header?.typeGap))  TYPE_GAP = s.header.typeGap;
+    if (Number.isFinite(s.header?.markSize)) MARK = s.header.markSize;
+    for (const k of ["n","line","canal","bank","zoom"]) {
+      if (Number.isFinite(s.icon?.[k])) ICON[k] = s.icon[k];
+    }
+    for (const k of ["n","gap","canal","gutter","branchK"]) {
+      if (Number.isFinite(s.shape?.[k])) SHAPE[k] = s.shape[k];
+    }
+    if (ROUTES[s.shape?.route]) SHAPE.route = s.shape.route;
+    if (typeof s.shape?.clip === "boolean") SHAPE.clip = s.shape.clip;
+    syncShape();
+    for (const k of ["n","depth","rings","alpha","seed","scale","ox","oy"]) {
+      if (Number.isFinite(s.bgGrid?.[k])) BGG[k] = s.bgGrid[k];
+    }
+    if (typeof s.bgGrid?.on === "boolean") BGG.on = s.bgGrid.on;
+    if (BG_MODES[s.bgGrid?.mode]) BGG.mode = s.bgGrid.mode;
+    if (HEX.test(s.bgGrid?.color ?? "")) BGG.color = s.bgGrid.color;
+    syncBgUI();
+    if (typeof s.name === "string" && s.name) saveName.value = s.name;
+    for (const [id, get, mult] of SLIDERS) {
+      const el = document.getElementById(id);
+      el.value = Math.round(get() * mult);
+      document.getElementById(id + "V").textContent = el.value;
+    }
+    refresh(true);
+    return true;
+  }
+
+  /* ---- autosave: every adjustment is written back, with the time it happened ---- */
+  let saveTimer = 0, restoring = true;
+  function stamp(d) {
+    return d.toLocaleString("th-TH", { day: "2-digit", month: "short",
+      hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  }
+  function touch() {
+    if (restoring) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const snap = snapshot();
+      try {
+        localStorage.setItem(STORE_LAST, JSON.stringify(snap));
+        autosaveEl.textContent = "บันทึกอัตโนมัติล่าสุด · " + stamp(new Date(snap.savedAt));
+        delete autosaveEl.dataset.warn;
+      } catch {
+        autosaveEl.dataset.warn = "1";
+        autosaveEl.textContent = "เบราว์เซอร์ไม่ให้เก็บข้อมูล — ใช้ปุ่ม Save All เพื่อเก็บเป็นไฟล์แทน";
+      }
+    }, 250);
+  }
+
+  /* ---- named sets kept in the browser ---- */
+  const readSets = () => {
+    try { return JSON.parse(localStorage.getItem(STORE_SETS) || "{}"); }
+    catch { return {}; }
+  };
+  const storeList = document.getElementById("storeList");
+
+  function renderSets() {
+    const sets = readSets();
+    storeList.textContent = "";
+    const names = Object.keys(sets).sort();
+    if (!names.length) {
+      const p = document.createElement("span");
+      p.className = "hint";
+      p.textContent = "ยังไม่มีชุดที่เก็บไว้";
+      storeList.appendChild(p);
+      return;
+    }
+    for (const n of names) {
+      const b = document.createElement("button");
+      b.className = "chip";
+      b.innerHTML = '<i style="background:' + (sets[n].colors?.land || "#888") + '"></i>' +
+                    '<i style="background:' + (sets[n].colors?.water || "#888") + '"></i>' +
+                    '<span></span><b class="x" title="ลบ">×</b>';
+      b.querySelector("span").textContent = n;
+      b.title = "บันทึกเมื่อ " + stamp(new Date(sets[n].savedAt));
+      b.onclick = (e) => {
+        if (e.target.classList.contains("x")) {
+          const all = readSets(); delete all[n];
+          localStorage.setItem(STORE_SETS, JSON.stringify(all));
+          renderSets();
+          return;
+        }
+        applySnapshot(sets[n]);
+        saveStatus.textContent = "โหลดชุด “" + n + "” แล้ว";
+      };
+      storeList.appendChild(b);
+    }
+  }
+
+  document.getElementById("storeSave").onclick = () => {
+    const snap = snapshot(), all = readSets();
+    all[snap.name] = snap;
+    try {
+      localStorage.setItem(STORE_SETS, JSON.stringify(all));
+      saveStatus.textContent = "เก็บชุด “" + snap.name + "” · " + stamp(new Date());
+      renderSets();
+    } catch { saveStatus.textContent = "เก็บไม่สำเร็จ — พื้นที่เบราว์เซอร์เต็ม"; }
+  };
+
+  /* ---- copy / download the settings on their own ---- */
+  const copyStatus = document.getElementById("copyStatus");
+  document.getElementById("copySettings").onclick = async () => {
+    const json = JSON.stringify(snapshot(), null, 2);
+    try {
+      await navigator.clipboard.writeText(json);
+      copyStatus.textContent = "คัดลอกแล้ว · " + stamp(new Date());
+    } catch {
+      // clipboard blocked (file:// or permission) — fall back to a select-all box
+      const ta = document.createElement("textarea");
+      ta.value = json; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy"); ta.remove();
+      copyStatus.textContent = "คัดลอกแล้ว (fallback)";
+    }
+  };
+  document.getElementById("dlSettings").onclick = () => {
+    const snap = snapshot();
+    download(new Blob([JSON.stringify(snap, null, 2)], { type: "application/json" }),
+      slug(saveName.value) + "-settings.json");
+    copyStatus.textContent = "ดาวน์โหลด settings.json แล้ว";
+  };
+
+  document.getElementById("resetAll").onclick = () => {
+    applySnapshot({ colors: DEFAULTS, text: { line1: "CANAL", line2: "GRID" },
+      header: { typeGap: 330, markSize: 1010 },
+      shape: { n: 5, gap: 6, canal: 32, gutter: 13, branchK: 0.58, route: "diag", clip: false },
+      bgGrid: { on: false, mode: "room", n: 14, depth: 0.42, rings: 9, alpha: 0.45, color: "#1C2A30", seed: 7, scale: 1, ox: 0, oy: 0 },
+      icon: { n: 3, line: 18, canal: 76, bank: 0, zoom: 1.40 } });
+    saveStatus.textContent = "คืนค่าเริ่มต้นแล้ว";
+  };
+
+  const jsonFile = document.getElementById("jsonFile");
+  document.getElementById("loadJson").onclick = () => jsonFile.click();
+  jsonFile.onchange = async () => {
+    const f = jsonFile.files?.[0];
+    if (!f) return;
+    try {
+      applySnapshot(JSON.parse(await f.text()));
+      saveStatus.textContent = "โหลดจาก " + f.name + " แล้ว";
+    } catch { saveStatus.textContent = "อ่านไฟล์ไม่ได้ — รูปแบบ JSON ไม่ถูกต้อง"; }
+    jsonFile.value = "";
+  };
+
+  /* ---- Save All: every deliverable + the settings, in one press ---- */
+  const slug = (s) => (s.trim() || "canal-grid")
+    .replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "-").replace(/-+/g, "-");
+
+  function buildAll() {
+    const n = slug(saveName.value);
+    return [
+      { file: n + "-header-4096x2304-store", make: async () => {
+          const r = await fitUnder1MB(headerCanvas(4096));
+          return Object.assign(r.blob, { storeExt: r.ext });
+        }, dynamicExt: true },
+      { file: n + "-header-4096x2304.png", make: () => blobOf(headerCanvas(4096), "png") },
+      { file: n + "-header-4096x2304.jpg", make: () => blobOf(headerCanvas(4096), "jpg") },
+      { file: n + "-header-1024x576.png",  make: () => blobOf(headerCanvas(1024), "png") },
+      { file: n + "-icon-1024.png",        make: () => blobOf(iconCanvas(1024, false), "png") },
+      { file: n + "-icon-512.png",         make: () => blobOf(iconCanvas(512, false), "png") },
+      { file: n + "-icon-512-padded.png",  make: () => blobOf(iconCanvas(512, true), "png") },
+      { file: n + "-settings.json", make: async () =>
+          new Blob([JSON.stringify(snapshot(), null, 2)], { type: "application/json" }) },
+    ];
+  }
+
+  document.getElementById("manifest").textContent =
+    "Save All จะเขียน 8 ไฟล์: header สโตร์ ≤1MB (4096×2304), header PNG 24-bit + JPG (4096×2304), header 1024, icon 1024/512/512-padded และ settings.json";
+
+  const saveAllBtn = document.getElementById("saveAll");
+  saveAllBtn.onclick = async () => {
+    const items = buildAll();
+    saveAllBtn.disabled = true;
+
+    // a directory handle writes the whole set into one folder with a single
+    // permission prompt; without it the browser falls back to 7 downloads
+    let dir = null;
+    if (window.showDirectoryPicker) {
+      try { dir = await window.showDirectoryPicker({ mode: "readwrite", id: "canalgrid" }); }
+      catch (e) {
+        if (e?.name === "AbortError") { saveAllBtn.disabled = false; saveStatus.textContent = "ยกเลิกแล้ว"; return; }
+      }
+    }
+
+    try {
+      for (let i = 0; i < items.length; i++) {
+        saveStatus.textContent = "กำลังเขียน " + (i + 1) + "/" + items.length + " · " + items[i].file;
+        const blob = await items[i].make();
+        const fname = items[i].dynamicExt ? items[i].file + "." + (blob.storeExt || "png") : items[i].file;
+        if (dir) {
+          const fh = await dir.getFileHandle(fname, { create: true });
+          const w = await fh.createWritable();
+          await w.write(blob);
+          await w.close();
+        } else {
+          download(blob, fname);
+          await new Promise(r => setTimeout(r, 350));   // let the browser queue each one
+        }
+      }
+      saveStatus.textContent = "เซฟครบ " + items.length + " ไฟล์ · " + stamp(new Date()) +
+        (dir ? "" : " (ดูในโฟลเดอร์ Downloads)");
+      status.textContent = "";
+    } catch (e) {
+      saveStatus.textContent = "เซฟไม่สำเร็จ: " + (e?.message || e);
+    } finally {
+      saveAllBtn.disabled = false;
+    }
+  };
+
+  saveName.oninput = touch;
+
+  /* ---------- boot ---------- */
+  addEventListener("resize", renderPreview);
+  renderSets();
+
+  let restored = null;
+  try { restored = JSON.parse(localStorage.getItem(STORE_LAST) || "null"); } catch {}
+  if (restored && applySnapshot(restored)) {
+    autosaveEl.textContent = "กู้คืนจากการปรับล่าสุด · " + stamp(new Date(restored.savedAt));
+  } else {
+    refresh(true);
+    autosaveEl.textContent = "ยังไม่มีการบันทึก — ปรับค่าอะไรก็ได้แล้วระบบจะเก็บให้อัตโนมัติ";
+  }
+  restoring = false;
+
+  document.fonts?.ready.then(renderPreview);   // re-draw once Space Grotesk has loaded
+})();
+</script>

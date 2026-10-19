@@ -1,0 +1,600 @@
+<!doctype html><html><head><!-- frame-runtime --><script>window.__FRAME_PREAMBLE={"v":1,"capabilities":{"artifact":"artifact.C12lZ9DL.js","assets":"assets.8Gk803W0.js","comments":"comments.vw5vQdGA.js","db":"db.h-3sndFg.js","downloads":"downloads.Cqv48mdo.js","embed":"embed.eqL6deQM.js","endpoints":"endpoints.CfzSv5nM.js","mcp":"mcp.Bvma3qD7.js","network":"network.B5UA9Su4.js","permissions":"permissions.BNySkLV5.js","room":"room.VSdFwTE9.js","sample":"sample.BW2Uysoh.js","self":"artifact.C12lZ9DL.js","user":"user.BpKav-Rf.js"},"transforms":"_transforms.DSB5x63f.js","comments":"_comments.lsIZQbAK.js","translate":"_translate.5HCW4BJh.js"}</script><script>(function(){"use strict";var te=["light","dark","system"],re=/^[A-Za-z0-9_-]{1,64}$/,$=/^[a-zA-Z_:][a-zA-Z0-9_:.-]{0,127}$/,ne=new Set(["class","hidden","value","checked","style","title","alt","placeholder","lang","dir","role","tabindex","disabled","readonly","contenteditable","open","colspan","rowspan"]);function oe(e){const t=e.toLowerCase();return t.startsWith("data-")||t.startsWith("aria-")||ne.has(t)}var Be="http://www.w3.org/1999/xhtml",se="http://www.w3.org/2000/svg",ae=new Set(["script","style","iframe","noscript","noframes","noembed","xmp","plaintext","template","title","textarea","object","embed"]),ie=new Set(["script","style"]);function ce(e){const t=e.localName.toLowerCase();return e.namespaceURI==="http://www.w3.org/1999/xhtml"?!ae.has(t):e.namespaceURI===se?!ie.has(t):!1}function M(e,t){return e===t||(e===160||e===32)&&(t===160||t===32)}function le(e,t){const r=e.length,n=t.length;let s=0;for(;s<r&&s<n&&M(e.charCodeAt(s),t.charCodeAt(s));)s++;let o=0;for(;o<r-s&&o<n-s&&M(e.charCodeAt(r-1-o),t.charCodeAt(n-1-o));)o++;return{p:s,s:o}}function ue(e,t){const r=e.firstChild;if(e.childNodes.length!==1||r===null||r.nodeType!==Node.TEXT_NODE){e.textContent=t;return}const n=r.data,s=n.length,o=t.length,{p:i,s:c}=le(n,t);i===s&&c===0&&s===o||r.replaceData(i,s-i-c,t.slice(i,o-c));const h=r.data,p=e.ownerDocument.getSelection?.()??null,w=p!==null&&p.rangeCount>0&&(p.anchorNode===r||p.focusNode===r)?{anchor:p.anchorNode,anchorOffset:p.anchorOffset,focus:p.focusNode,focusOffset:p.focusOffset}:null;let m=-1,g=-1;for(let f=0;f<h.length&&f<t.length;f++){const v=h.charCodeAt(f),b=t.charCodeAt(f);v!==b&&M(v,b)&&(m<0&&(m=f),g=f)}const a=m>=0;if(a&&r.replaceData(m,g-m+1,t.slice(m,g+1)),a&&w!==null&&w.anchor!==null&&w.focus!==null)try{p.setBaseAndExtent(w.anchor,w.anchorOffset,w.focus,w.focusOffset)}catch{}}var fe=new Set(["html","head","body","frameset"]);function de(e){return e.namespaceURI==="http://www.w3.org/1999/xhtml"&&fe.has(e.localName)}function pe(e){if(e===null||typeof e!="object")return!1;const t=e;if(typeof t.target!="string"||!re.test(t.target)||t.text!==void 0&&typeof t.text!="string")return!1;if(t.attrsSet!==void 0){if(t.attrsSet===null||typeof t.attrsSet!="object")return!1;for(const[r,n]of Object.entries(t.attrsSet))if(!$.test(r)||typeof n!="string")return!1}if(t.attrsRemoved!==void 0){if(!Array.isArray(t.attrsRemoved))return!1;for(const r of t.attrsRemoved)if(typeof r!="string"||!$.test(r))return!1}return!0}function me(e,t){if(e===null||typeof e!="object")return!1;const{seq:r,elements:n}=e;if(typeof r!="number"||!Number.isSafeInteger(r)||!Array.isArray(n)||n.length===0||n.length>64)return!1;for(let s=0;s<n.length;s++)if(!t(n[s]))return!1;return!0}function he(e){return e===null||typeof e!="object"?!1:me(e.__frame_patch,pe)}function _e(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_init;return t!==null&&typeof t=="object"}function ve(e){return e!==null&&typeof e=="object"&&e.__frame_size_poke===!0}function ye(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_theme;if(t===null||typeof t!="object")return!1;const r=t.theme;return typeof r=="string"&&te.includes(r)}var A=/^[\w.-]+\.js$/;function we(e,t,r){return r?"inert":typeof t=="string"&&A.test(t)?e?[t]:"inert":e?"inert":"framed"}function ge(){return{post(e,t){parent.postMessage(e,t)},on(e){const t=r=>{r.source===parent&&e(r.data,r.origin,r.isTrusted)};return addEventListener("message",t),()=>removeEventListener("message",t)}}}function be(){return{post:()=>{},on:()=>()=>{}}}var j="__frame_scroll",Ee=150,Ae=310,Se=160,Te=3e4;function ke(){let e=0,t=!1,r=!1,n=!1,s=0,o=null;const i=l=>{try{sessionStorage.setItem(j,JSON.stringify({y:l}))}catch{}},c=()=>{if(clearTimeout(e),o===null)return;const l=o;o=null,i(l)},h=()=>{if(t){t=!1;return}r=!0,o=scrollY,clearTimeout(e),e=setTimeout(c,Ee)};try{addEventListener("scroll",h,{passive:!0}),addEventListener("pagehide",c)}catch{}const p=()=>{let l;try{l=sessionStorage.getItem(j)}catch{return null}if(l===null)return null;let _;try{_=JSON.parse(l)}catch{_=null}const d=_?.y;if(!(typeof d=="number"&&Number.isFinite(d)&&d>=0)){try{sessionStorage.removeItem(j)}catch{}return null}return d};let w=!1;const m=l=>{try{const _=scrollY;scrollTo({top:l,left:0,behavior:"instant"}),s=l,n=!0,clearTimeout(e),o=null,i(l);const d=scrollY;d!==_&&(t=!0),d!==l&&!w&&(w=!0,addEventListener("load",()=>{try{if(scrollY===d){const T=p();m(T!==null?T:s)}}catch{}},{once:!0}))}catch{}},g=()=>{try{return!!location.hash}catch{return!0}};let a=!1;const f=()=>{try{if(a||innerWidth>Ae||innerHeight>Se)return;a=!0;const l=Date.now(),_=()=>{try{removeEventListener("resize",_)}catch{}if(Date.now()-l>Te||r||g())return;const d=p();m(d!==null?d:s)};addEventListener("resize",_)}catch{}};let v=!1,b=!1;return{restore(){if(v||(v=!0,g()))return;const l=p();l!==null&&(m(l),f())},promoted(){if(b||(b=!0,g()))return;const l=p();l!==null?(m(l),f()):n&&m(s)}}}function Re(e,t,r,n){let s=null;try{s=window.trustedTypes?.createPolicy("frame-runtime",{createScriptURL:h=>h})??null}catch{}const o=window.Worker,i=o?.prototype,c=Object.freeze({Worker:o,workerOn:i?.addEventListener,workerPost:i?.postMessage,workerTerminate:i?.terminate,fetch:window.fetch.bind(window),preventDefault:Event.prototype.preventDefault,policy:s,origins:t});r(e).then(h=>h?.bootTopLevel?h.bootTopLevel(c,n):n.settle()).catch(()=>n.settle())}var De="modulepreload",Ie=function(e){return"/"+e},Ue={},Le=function(t,r,n){let s=Promise.resolve();function o(i){const c=new Event("vite:preloadError",{cancelable:!0});if(c.payload=i,window.dispatchEvent(c),!c.defaultPrevented)throw i}return s.then(i=>{for(const c of i||[])c.status==="rejected"&&o(c.reason);return t().catch(o)})},Oe=window===top,q=Object.getOwnPropertyDescriptor(window,"claude"),k=we(Oe,window.__FRAME_PREAMBLE?.topLevel,q?.writable===!1),N=typeof k=="object"&&k[0],y=N?be():ge();(function(){const e=Object.defineProperty,t=globalThis,r=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let n=0;for(let s=0;s<r.length;s++){const o=r[s];try{e(t,o,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[o]}catch{}try{e(t,o,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[o]=="function"&&n++}if(n&&k==="framed")try{y.post({__frame_rtc_lockdown_failed:n},"*")}catch{}})();var Pe=1e4,Y=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function X(e){for(const t of Y)if(t.endsWith(":*"))try{const r=new URL(e);if(`${r.protocol}//${r.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}var R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities}),B=window.__FRAME_PREAMBLE?.transforms,D=window.__FRAME_PREAMBLE?.comments,I=window.__FRAME_PREAMBLE?.translate;function S(e){return Le(()=>import("/_runtime/"+e),void 0)}function G(e,t){return{contract:e.contract,changes:new Set(e.changes??[]),flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:new Map,shellOrigin:t,mount:x,hooks:O,pipe:()=>({wrap:(r,n)=>(...s)=>{try{return n(...s)}catch(o){return Promise.reject(o)}}})}}var L=null,E=null;function V(e,t,r){try{Object.defineProperty(e,t,{value:r,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:r,writable:!1,configurable:!0,enumerable:!0})}catch{}}}var U=!1,O={editBefore:null,edit:null};function Ce(e,t,r=!1){const n=[];let s;if(r)try{O.editBefore?.(e)}catch{}for(const o of e.elements){const i=document.querySelector(`[data-id="${o.target}"]`);if(!i){s=o.target;break}if([...Object.keys(o.attrsSet??{}),...o.attrsRemoved??[]].some(c=>!oe(c))){s=o.target;break}if(o.text!==void 0&&(!ce(i)||de(i))){s=o.target;break}for(const[c,h]of Object.entries(o.attrsSet??{}))if(!J(i,c)){try{i.setAttribute(c,h)}catch{}Z(i,c,h)}for(const c of o.attrsRemoved??[])J(i,c)||(i.removeAttribute(c),Z(i,c,null));typeof o.text=="string"&&ue(i,o.text),n.push(o.target)}if(r)try{O.edit?.(e.seq,n,s)}catch{}if(s!==void 0){y.post({__frame_patch_miss:{seq:e.seq}},t);return}try{document.dispatchEvent(new CustomEvent("claude:edit",{detail:{seq:e.seq,targets:n}}))}catch{}}function Z(e,t,r){if(!(e instanceof HTMLInputElement))return;const n=t.toLowerCase();n==="checked"?e.checked=r!==null:n==="value"&&e.type!=="file"&&(e.value=r??"")}function J(e,t){const r=t.toLowerCase(),n=e;return r==="data-id"||(r==="value"||r==="checked")&&(n.__artifactSecret===!0||/^(password|hidden|file)$/.test(n.type??"")||/(^|\s)(cc-|one-time-code|current-password|new-password)/i.test(`${e.getAttribute("autocomplete")??""} ${n.autocomplete??""}`))}function Q(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,U=!0):U&&(delete t.dataset.theme,t.style.colorScheme="",U=!1)}var P=new Map;function Me(){let e;const t={u:new Promise(r=>{e=r}),r:r=>{t.done=!0,e(r)},done:!1,nulled:!1};return t}function F(){for(const e of P.values())e.done||(e.nulled=!0,e.r(null))}var je=Object.freeze(Object.assign(Object.create(null),{call:Function.prototype.call,apply:Function.prototype.apply,bind:Function.prototype.bind})),x=(e,t)=>{const r=P.get(e);if(!r||r.done){r?.nulled&&E&&y.post({__frame_cap_telemetry:{kind:"cap-load-error",cap:e}},E);return}const n=typeof t=="function"?Object.setPrototypeOf(t,je):Object.assign(Object.create(null),t);typeof n.then=="function"&&delete n.then,r.r(Object.freeze(n))};function ee(){const e=q?.value??{};V(window,"claude",e);for(const t of Object.keys(R)){if(e[t]!==void 0){V(e,t,e[t]);continue}P.set(t,Me())}if(e.use===void 0){const t=r=>{if(typeof r!="string"||!Object.hasOwn(R,r))return Promise.resolve(null);const n=P.get(r);return n?n.u:Promise.resolve(e[r]??null)};try{Object.defineProperty(e,"use",{value:t,writable:!0,configurable:!0,enumerable:!1})}catch{}}}if(k==="framed"){const e=B&&A.test(B)?S(B).catch(()=>{}):Promise.resolve(void 0),t=a=>{if(a.type==="auxclick"&&a.button!==1)return;const f=a.target,v=f&&f.closest?f.closest("a[href],area[href]"):null;if(!v)return;const b=v.getAttribute("href");if(!b)return;let l;try{l=new URL(b,document.baseURI)}catch{return}if((l.protocol==="http:"||l.protocol==="https:")&&l.origin!==location.origin){a.preventDefault();const _=(v.getAttribute("target")??"").toLowerCase(),d=a.type==="auxclick"||a.metaKey||a.ctrlKey||a.shiftKey||a.altKey||!["","_self","_top","_parent"].includes(_);y.post({__frame_nav:!0,url:l.href,newTab:d},"*")}};addEventListener("click",t,!0),addEventListener("auxclick",t,!0);const r={},n=a=>{a.isTrusted&&(r.pointer=!0)},s=a=>{a.isTrusted&&(r.click=!0)};addEventListener("pointermove",n,{capture:!0,passive:!0}),addEventListener("click",s,{capture:!0,passive:!0}),e.then(a=>{a?.wireNav&&(a.wireNav(),removeEventListener("click",t,!0),removeEventListener("auxclick",t,!0),removeEventListener("pointermove",n,!0),removeEventListener("click",s,!0),a.wireEngagement?.(r))});let o=null;try{o=ke()}catch{}ee();let i=null,c=null,h=0;const p=y.on((a,f)=>{X(f)&&_e(a)&&(i=a.__frame_init,E=f,p(),clearTimeout(h),c?.())});y.post({__frame_connect:!0},"*");const w=new Promise(a=>{c=a,h=setTimeout(()=>{p(),a()},Pe)}),m=document.readyState==="loading"?new Promise(a=>document.addEventListener("DOMContentLoaded",()=>a(),{once:!0})):Promise.resolve();m.then(()=>{try{o?.restore()}catch{}});const g={cb:null};y.on((a,f)=>{if(X(f)&&ve(a)){try{o?.promoted()}catch{}g.cb?.()}}),w.then(async()=>{if(!i||!E){F();return}Q(i.theme);const a=E;let f=!1,v=!1;y.on((u,z,C)=>{if(z!==a)return;ye(u)&&Q(u.__frame_theme.theme),he(u)&&Ce(u.__frame_patch,a,C);const H=u?.__fc_mode;H&&typeof H=="object"&&!f&&D&&A.test(D)&&(f=!0,S(D).then(K=>K.install?.(a,H.on===!0)).catch(()=>{}));const W=u?.__ft_cmd;W&&typeof W=="object"&&!v&&I&&A.test(I)&&(v=!0,S(I).then(K=>K.install?.(a,W)).catch(()=>{}))});const b=Object.keys(i.capabilities??{}).filter(u=>Object.hasOwn(R,u)).map(u=>[u,R[u]]).filter(u=>typeof u[1]=="string"&&A.test(u[1])),l=await Promise.allSettled(b.map(([,u])=>S(u))),_=await e,d=E;if(_?.buildBoot||y.post({__frame_cap_telemetry:{kind:"cap-load-error",cap:"_transforms"}},d),_?.buildBoot)try{L=_.buildBoot(i,_.TRANSFORMS??{},{shellOrigin:d,mount:x,hooks:O},u=>y.post({__frame_cap_telemetry:u},d))}catch{y.post({__frame_cap_telemetry:{kind:"cap-load-error",cap:"_transforms"}},d),L=G(i,d)}else L=G(i,d);const T=u=>y.post({__frame_cap_telemetry:{kind:"cap-load-error",cap:u}},d),Ne=L;l.forEach((u,z)=>{const C=b[z][0];if(u.status!=="fulfilled"){T(C);return}try{u.value?.install?.(Ne)}catch{T(C)}}),F(),await m,y.post({__frame_ready:!0},E),e.then(u=>u?.installSizeReporter?.(d,g))})}else N&&(ee(),Re(N,Y,S,{settle:F,mount:x}))})();</script><!-- /frame-runtime --><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Canal Grid Icon Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #0B0E14;
+    --panel: #141A21;
+    --panel-2: #101821;
+    --line: #1F2A31;
+    --line-soft: #18222A;
+    --text: #E8F6F3;
+    --muted: #86A09D;
+    --muted-2: #5C7472;
+    --mint: #8FE8DC;
+    --teal: #2F5E60;
+    --sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 40px 28px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  header { display: flex; flex-direction: column; gap: 7px; }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--muted-2);
+    text-transform: uppercase;
+  }
+  h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .sub { margin: 0; color: var(--muted); max-width: 64ch; text-wrap: pretty; }
+
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  /* ---------- stage ---------- */
+  .stage {
+    display: flex;
+    justify-content: center;
+    padding: 26px;
+    border-radius: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--line-soft);
+  }
+  .stage[data-backdrop="light"] { background: #F4F4F2; border-color: #DEDEDA; }
+  .stage[data-backdrop="dark"] { background: #000; border-color: #262626; }
+  .stage[data-backdrop="grid"] {
+    background-color: #6E7679;
+    background-image:
+      linear-gradient(45deg, #575E61 25%, transparent 25%, transparent 75%, #575E61 75%),
+      linear-gradient(45deg, #575E61 25%, transparent 25%, transparent 75%, #575E61 75%);
+    background-size: 22px 22px;
+    background-position: 0 0, 11px 11px;
+    border-color: #4A5154;
+  }
+  #preview { width: 320px; height: 320px; display: block; border-radius: 2px; }
+
+  .sizes { display: flex; align-items: flex-end; gap: 22px; }
+  .size-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .size-item span { font-family: var(--mono); font-size: 10px; color: var(--muted-2); }
+  .size-item canvas { display: block; border-radius: 2px; }
+
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .spread { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+  /* ---------- controls ---------- */
+  button, .seg-btn {
+    font: inherit;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: border-color .12s ease, background .12s ease, color .12s ease;
+  }
+  button:hover, .seg-btn:hover { border-color: var(--mint); }
+  button:focus-visible, .seg-btn:focus-visible, input:focus-visible {
+    outline: 2px solid var(--mint);
+    outline-offset: 2px;
+  }
+  .primary {
+    background: var(--mint);
+    border-color: var(--mint);
+    color: #08201D;
+    font-weight: 500;
+  }
+  .primary:hover { background: #A9F0E6; border-color: #A9F0E6; }
+
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .seg .seg-btn { border: 0; border-radius: 0; padding: 7px 13px; font-size: 12px; color: var(--muted); }
+  .seg .seg-btn + .seg-btn { border-left: 1px solid var(--line); }
+  .seg .seg-btn[aria-pressed="true"] { background: var(--line-soft); color: var(--text); }
+
+  .swatch-row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .swatch-row:last-of-type { border-bottom: 0; }
+
+  .swatch {
+    position: relative;
+    width: 44px;
+    height: 40px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .swatch input[type="color"] {
+    position: absolute;
+    inset: -6px;
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .field label { font-size: 12px; color: var(--text); }
+  .field .hint { font-size: 11px; color: var(--muted-2); }
+
+  input[type="text"] {
+    font-family: var(--mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    width: 96px;
+    padding: 8px 10px;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  input[type="text"].invalid { border-color: #E0644F; }
+
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; }
+  .preset {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 11px 6px 7px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .preset:hover { color: var(--text); }
+  .chips { display: flex; }
+  .chip { width: 13px; height: 13px; border-radius: 2px; border: 1px solid rgba(255,255,255,.16); }
+  .chip + .chip { margin-left: -3px; }
+
+  .check { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--muted); cursor: pointer; }
+  .check input { accent-color: var(--mint); width: 15px; height: 15px; }
+
+  .status { font-size: 12px; color: var(--muted); min-height: 18px; font-family: var(--mono); }
+  .status[data-tone="err"] { color: #E0644F; }
+  .status[data-tone="ok"] { color: var(--mint); }
+
+  .code {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--muted);
+    background: var(--panel-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 13px 15px;
+    overflow-x: auto;
+    white-space: pre;
+    user-select: all;
+  }
+
+  #fallback { display: none; flex-direction: column; gap: 10px; }
+  #fallback img { width: 180px; height: 180px; border: 1px solid var(--line); border-radius: 3px; }
+
+  footer { color: var(--muted-2); font-size: 12px; border-top: 1px solid var(--line-soft); padding-top: 16px; }
+
+  @media (max-width: 900px) {
+    .cols { grid-template-columns: minmax(0, 1fr); }
+    #preview { width: 260px; height: 260px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Canal Grid · developer icon</div>
+    <h1>ห้องแล็บสีไอคอน</h1>
+    <p class="sub">แก้สีทีละส่วนได้เอง แล้วส่งออกเป็น PNG 512×512 (24-bit ทึบ ตรงสเปกสโตร์) รูปทรงคือแบบ V05 ที่เลือกไว้ — คลองทแยงหักมุม แผ่นดิน 5×5</p>
+  </header>
+
+  <div class="cols">
+
+    <div class="card">
+      <div class="spread">
+        <div class="card-title">ตัวอย่าง</div>
+        <div class="seg" role="group" aria-label="พื้นหลังฉาก">
+          <button class="seg-btn" data-backdrop="neutral" aria-pressed="true">กลาง</button>
+          <button class="seg-btn" data-backdrop="light" aria-pressed="false">ขาว</button>
+          <button class="seg-btn" data-backdrop="dark" aria-pressed="false">ดำ</button>
+          <button class="seg-btn" data-backdrop="grid" aria-pressed="false">ตาราง</button>
+        </div>
+      </div>
+
+      <div class="stage" id="stage" data-backdrop="neutral">
+        <canvas id="preview" width="320" height="320" aria-label="ตัวอย่างไอคอน"></canvas>
+      </div>
+
+      <div>
+        <div class="card-title" style="margin-bottom: 12px">ขนาดจริงบนหน้าจอ</div>
+        <div class="sizes">
+          <div class="size-item"><canvas data-mini="48" width="48" height="48"></canvas><span>48</span></div>
+          <div class="size-item"><canvas data-mini="32" width="32" height="32"></canvas><span>32</span></div>
+          <div class="size-item"><canvas data-mini="24" width="24" height="24"></canvas><span>24</span></div>
+          <div class="size-item"><canvas data-mini="16" width="16" height="16"></canvas><span>16</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <button class="primary" id="export512">ส่งออก PNG 512</button>
+        <button id="export1024">1024</button>
+        <button id="export192">192</button>
+        <button id="reset">คืนค่าสีเดิม</button>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+
+      <div id="fallback">
+        <div class="card-title">คลิกขวาที่ภาพ → บันทึกรูปภาพเป็น…</div>
+        <img id="fallbackImg" alt="ไอคอนสำหรับบันทึก">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">สีแต่ละส่วน</div>
+
+      <div>
+        <div class="swatch-row">
+          <div class="swatch" style="background: #0B0E14"><input type="color" data-key="bg" value="#0b0e14" aria-label="สีพื้นหลัง"></div>
+          <div class="field">
+            <label>พื้นหลัง</label>
+            <div class="hint">เต็มกรอบสี่เหลี่ยม ไม่มีความโปร่งใส</div>
+          </div>
+          <input type="text" data-hex="bg" value="#0B0E14" spellcheck="false" aria-label="รหัสสีพื้นหลัง">
+        </div>
+
+        <div class="swatch-row">
+          <div class="swatch" style="background: #8FE8DC"><input type="color" data-key="land" value="#8fe8dc" aria-label="สีแผ่นดิน"></div>
+          <div class="field">
+            <label>แผ่นดิน</label>
+            <div class="hint">ช่องตาราง 5×5</div>
+          </div>
+          <input type="text" data-hex="land" value="#8FE8DC" spellcheck="false" aria-label="รหัสสีแผ่นดิน">
+        </div>
+
+        <div class="swatch-row">
+          <div class="swatch" style="background: #0B0E14"><input type="color" data-key="bank" value="#0b0e14" aria-label="สีตลิ่ง"></div>
+          <div class="field">
+            <label>ตลิ่ง</label>
+            <div class="hint">แถบที่คั่นระหว่างน้ำกับแผ่นดิน</div>
+          </div>
+          <input type="text" data-hex="bank" value="#0B0E14" spellcheck="false" aria-label="รหัสสีตลิ่ง">
+        </div>
+
+        <div class="swatch-row">
+          <div class="swatch" style="background: #2F5E60"><input type="color" data-key="water" value="#2f5e60" aria-label="สีน้ำ"></div>
+          <div class="field">
+            <label>น้ำในคลอง</label>
+            <div class="hint">เส้นกลางที่ไหลผ่านทั้งภาพ</div>
+          </div>
+          <input type="text" data-hex="water" value="#2F5E60" spellcheck="false" aria-label="รหัสสีน้ำ">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="linkBank" checked>
+        ให้ตลิ่งใช้สีเดียวกับพื้นหลัง
+      </label>
+
+      <div>
+        <div class="card-title" style="margin-bottom: 11px">ชุดสีสำเร็จ</div>
+        <div class="presets" id="presets"></div>
+      </div>
+
+      <div>
+        <div class="card-title" style="margin-bottom: 11px">ชุดสีปัจจุบัน</div>
+        <div class="code" id="paletteOut"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>รูปทรงตรงกับไฟล์ที่เรนเดอร์จาก make-final.mjs ทุกพิกเซล — เปลี่ยนแค่สี ส่งออกได้เลย</footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------- geometry: the same numbers make-final.mjs renders ---------- */
+  const DESIGN = 320, PAD_RATIO = 0.09;
+  const GAP = 6, N = 5, TILE = (DESIGN - GAP * (N - 1)) / N;
+  const POS = Array.from({ length: N }, (_, i) => i * (TILE + GAP));
+  const REACH = [[-260, 724], [-40, 392], [58, 244], [150, 200], [176, 104], [274, 52], [372, -96], [592, -428]];
+  const CANAL_W = 32, GUTTER = 13;
+
+  // mitred band around a polyline — straight, sharp edges
+  function bandPolygon(pts, width) {
+    const w = width / 2;
+    const normal = (i) => {
+      const a = pts[i], b = pts[i + 1];
+      const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+      return [-dy / L, dx / L];
+    };
+    const left = [], right = [];
+    for (let i = 0; i < pts.length; i++) {
+      let nx, ny;
+      if (i === 0) [nx, ny] = normal(0);
+      else if (i === pts.length - 1) [nx, ny] = normal(pts.length - 2);
+      else {
+        const [ax, ay] = normal(i - 1), [bx, by] = normal(i);
+        let mx = ax + bx, my = ay + by;
+        const L = Math.hypot(mx, my) || 1;
+        mx /= L; my /= L;
+        const scale = Math.min(4, 1 / Math.max(0.25, mx * ax + my * ay));
+        nx = mx * scale; ny = my * scale;
+      }
+      left.push([pts[i][0] + nx * w, pts[i][1] + ny * w]);
+      right.push([pts[i][0] - nx * w, pts[i][1] - ny * w]);
+    }
+    return left.concat(right.reverse());
+  }
+
+  const GUTTER_BAND = bandPolygon(REACH, CANAL_W + GUTTER * 2);
+  const WATER_BAND = bandPolygon(REACH, CANAL_W);
+
+  function drawIcon(ctx, size, c) {
+    const pad = Math.round(size * PAD_RATIO);
+    const s = (size - pad * 2) / DESIGN;
+    const ox = size / 2, oy = size / 2;
+    const X = (p) => ox + (p[0] - DESIGN / 2) * s;
+    const Y = (p) => oy + (p[1] - DESIGN / 2) * s;
+
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = c.bg;
+    ctx.fillRect(0, 0, size, size);
+
+    ctx.fillStyle = c.land;
+    for (const ty of POS) for (const tx of POS) {
+      const x0 = X([tx, ty]), y0 = Y([tx, ty]);
+      ctx.fillRect(x0, y0, TILE * s, TILE * s);
+    }
+
+    const poly = (points, fill) => {
+      ctx.beginPath();
+      points.forEach((p, i) => (i ? ctx.lineTo(X(p), Y(p)) : ctx.moveTo(X(p), Y(p))));
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+    };
+    poly(GUTTER_BAND, c.bank);
+    poly(WATER_BAND, c.water);
+    ctx.restore();
+  }
+
+  /* ---------- state ---------- */
+  const DEFAULTS = { bg: "#0B0E14", land: "#8FE8DC", bank: "#0B0E14", water: "#2F5E60" };
+  const colors = { ...DEFAULTS };
+  const KEYS = ["bg", "land", "bank", "water"];
+  const LABEL = { bg: "พื้นหลัง", land: "แผ่นดิน", bank: "ตลิ่ง", water: "น้ำ" };
+
+  const PRESETS = [
+    { name: "แบรนด์เดิม", c: { bg: "#0B0E14", land: "#8FE8DC", bank: "#0B0E14", water: "#2F5E60" } },
+    { name: "กราไฟต์ · หยก", c: { bg: "#0F1214", land: "#EAE6DC", bank: "#0F1214", water: "#00C9A7" } },
+    { name: "กรมท่า · อำพัน", c: { bg: "#0B1530", land: "#F0E7D6", bank: "#0B1530", water: "#FFB020" } },
+    { name: "ส้มแดงโรงงาน", c: { bg: "#17171A", land: "#B8B3A8", bank: "#17171A", water: "#FF3B21" } },
+    { name: "มะนาวแสบตา", c: { bg: "#0A0A0A", land: "#C6FF3D", bank: "#0A0A0A", water: "#0A0A0A" } },
+    { name: "ขาวดำแดง", c: { bg: "#000000", land: "#FFFFFF", bank: "#000000", water: "#FF0033" } },
+    { name: "เสจ · ดินเผา", c: { bg: "#1C201B", land: "#C9D4BE", bank: "#1C201B", water: "#D2622F" } },
+    { name: "หมึก · ครีม", c: { bg: "#101010", land: "#EFEDE6", bank: "#101010", water: "#2B4BFF" } },
+  ];
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const preview = $("#preview");
+  const minis = $$("canvas[data-mini]");
+  const statusEl = $("#status");
+  const linkBank = $("#linkBank");
+
+  function setStatus(msg, tone) {
+    statusEl.textContent = msg || "";
+    if (tone) statusEl.setAttribute("data-tone", tone);
+    else statusEl.removeAttribute("data-tone");
+  }
+
+  function fitCanvas(canvas, cssSize) {
+    const dpr = Math.min(3, window.devicePixelRatio || 1);
+    canvas.width = Math.round(cssSize * dpr);
+    canvas.height = Math.round(cssSize * dpr);
+    canvas.style.width = cssSize + "px";
+    canvas.style.height = cssSize + "px";
+    return { ctx: canvas.getContext("2d"), size: canvas.width };
+  }
+
+  function renderAll() {
+    const stageSize = preview.style.width ? parseInt(preview.style.width, 10) : (window.innerWidth <= 900 ? 260 : 320);
+    const big = fitCanvas(preview, stageSize);
+    drawIcon(big.ctx, big.size, colors);
+
+    for (const mini of minis) {
+      const px = Number(mini.dataset.mini);
+      const m = fitCanvas(mini, px);
+      drawIcon(m.ctx, m.size, colors);
+    }
+
+    $("#paletteOut").textContent = KEYS
+      .map((k) => LABEL[k].padEnd(9, " ") + colors[k].toUpperCase())
+      .join("\n");
+  }
+
+  /* ---------- colour inputs ---------- */
+  const normalise = (v) => {
+    let s = v.trim().replace(/^#/, "");
+    if (/^[0-9a-fA-F]{3}$/.test(s)) s = s.split("").map((ch) => ch + ch).join("");
+    return /^[0-9a-fA-F]{6}$/.test(s) ? "#" + s.toUpperCase() : null;
+  };
+
+  function applyColor(key, hex, from) {
+    colors[key] = hex;
+    if (key === "bg" && linkBank.checked) colors.bank = hex;
+
+    for (const k of KEYS) {
+      const picker = $(`input[type="color"][data-key="${k}"]`);
+      const text = $(`input[data-hex="${k}"]`);
+      picker.value = colors[k].toLowerCase();
+      picker.parentElement.style.background = colors[k];
+      if (from !== k) text.value = colors[k];
+      text.classList.remove("invalid");
+    }
+    renderAll();
+  }
+
+  $$('input[type="color"][data-key]').forEach((input) => {
+    input.addEventListener("input", () => applyColor(input.dataset.key, input.value.toUpperCase()));
+  });
+
+  $$("input[data-hex]").forEach((input) => {
+    input.addEventListener("input", () => {
+      const hex = normalise(input.value);
+      if (hex) applyColor(input.dataset.hex, hex, input.dataset.hex);
+      else input.classList.add("invalid");
+    });
+    input.addEventListener("blur", () => {
+      input.value = colors[input.dataset.hex];
+      input.classList.remove("invalid");
+    });
+  });
+
+  linkBank.addEventListener("change", () => {
+    if (linkBank.checked) applyColor("bg", colors.bg);
+  });
+
+  $("#reset").addEventListener("click", () => {
+    Object.assign(colors, DEFAULTS);
+    linkBank.checked = true;
+    applyColor("bg", colors.bg);
+    setStatus("คืนค่าสีแบรนด์เดิมแล้ว", "ok");
+  });
+
+  /* ---------- presets ---------- */
+  const presetsEl = $("#presets");
+  for (const preset of PRESETS) {
+    const btn = document.createElement("button");
+    btn.className = "preset";
+    btn.type = "button";
+    const chips = document.createElement("span");
+    chips.className = "chips";
+    for (const k of ["land", "water", "bg"]) {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.style.background = preset.c[k];
+      chips.appendChild(chip);
+    }
+    btn.appendChild(chips);
+    btn.appendChild(document.createTextNode(preset.name));
+    btn.addEventListener("click", () => {
+      Object.assign(colors, preset.c);
+      linkBank.checked = preset.c.bank === preset.c.bg;
+      applyColor("bg", colors.bg);
+      setStatus("ใช้ชุดสี “" + preset.name + "” แล้ว", "ok");
+    });
+    presetsEl.appendChild(btn);
+  }
+
+  /* ---------- backdrop ---------- */
+  $$(".seg-btn[data-backdrop]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      $$(".seg-btn[data-backdrop]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      $("#stage").dataset.backdrop = btn.dataset.backdrop;
+    });
+  });
+
+  /* ---------- export ---------- */
+  function renderToBlob(size) {
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    drawIcon(canvas.getContext("2d"), size, colors);
+    return new Promise((resolve) => canvas.toBlob((b) => resolve({ blob: b, canvas }), "image/png"));
+  }
+
+  async function exportPNG(size) {
+    setStatus("กำลังเรนเดอร์ " + size + "×" + size + "…");
+    const { blob, canvas } = await renderToBlob(size);
+    const filename = "canal-grid-icon-" + size + ".png";
+
+    let downloads = null;
+    try { downloads = await window.claude?.use?.("downloads"); } catch (e) { downloads = null; }
+
+    if (!downloads) return showFallback(canvas, size);
+
+    try {
+      await downloads.save({ filename, data: blob });
+      setStatus("บันทึก " + filename + " แล้ว (" + Math.round(blob.size / 1024) + " KB)", "ok");
+    } catch (err) {
+      const code = err && err.code;
+      if (code === "declined") setStatus("ยกเลิกการบันทึก");
+      else if (code === "rate_limited") setStatus("มีหน้าต่างบันทึกค้างอยู่ ลองใหม่อีกครั้ง", "err");
+      else showFallback(canvas, size);
+    }
+  }
+
+  function showFallback(canvas, size) {
+    $("#fallbackImg").src = canvas.toDataURL("image/png");
+    $("#fallback").style.display = "flex";
+    setStatus("บันทึกอัตโนมัติใช้ไม่ได้ที่นี่ — คลิกขวาที่ภาพด้านล่างเพื่อบันทึก (" + size + "×" + size + ")", "err");
+  }
+
+  $("#export512").addEventListener("click", () => exportPNG(512));
+  $("#export1024").addEventListener("click", () => exportPNG(1024));
+  $("#export192").addEventListener("click", () => exportPNG(192));
+
+  window.addEventListener("resize", renderAll);
+  applyColor("bg", colors.bg);
+})();
+</script>
+
+</body></html>

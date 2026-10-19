@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canal Grid Logo Tools</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--text:#222;--muted:#666;--line:#e4ddd2;--link:#0a58ca}
+@media (prefers-color-scheme:dark){:root{--bg:#16140f;--card:#211e18;--text:#eee;--muted:#aaa;--line:#3a352c;--link:#7fb0ff}}
+*{box-sizing:border-box}
+body{font-family:system-ui,sans-serif;max-width:720px;margin:0 auto;padding:40px 16px;line-height:1.5;color:var(--text);background:var(--bg)}
+h1{margin:0 0 4px}
+h2{font-size:1rem;margin:28px 0 8px}
+.lead{color:var(--muted);margin:0 0 20px}
+.final{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.final img{border-radius:16px;border:1px solid var(--line);background:var(--card)}
+ul{margin:0;padding-left:20px}
+a{color:var(--link)}
+code{font-size:.9em}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<p><a href="../">← Canal Grid</a></p>
+<h1>Logo tools</h1>
+<p class="lead">Generators and design pages for the Canal Grid logo.</p>
+
+<h2>Final artwork</h2>
+<div class="final">
+  <a href="canal-grid-icon-512-FINAL.png"><img src="canal-grid-icon-512-FINAL.png" width="96" height="96" alt="Canal Grid icon 512"></a>
+  <a href="canal-grid-header-4096x2304-FINAL.png"><img src="canal-grid-header-4096x2304-FINAL.png" width="171" height="96" alt="Canal Grid header 4096×2304"></a>
+</div>
+
+<h2>Design pages</h2>
+<ul>
+  <li><a href="icon-lab.html">icon-lab.html</a></li>
+  <li><a href="icon-lab-published.html">icon-lab-published.html</a></li>
+  <li><a href="canal-grid-header.html">canal-grid-header.html</a></li>
+  <li><a href="canal-grid-logo-directions.html">canal-grid-logo-directions.html</a></li>
+  <li><a href="canvas-variants/canal-grid-icon-variants.html">canvas-variants/canal-grid-icon-variants.html</a></li>
+  <li><a href="variants/_contact-sheet.png">variants/_contact-sheet.png</a> <span class="muted">(V01–V10)</span></li>
+</ul>
+
+<h2>PNG generators (Node.js, no dependencies)</h2>
+<ul>
+  <li><a href="make-final.mjs">make-final.mjs</a> <span class="muted">— <code>node make-final.mjs icon|header [outfile]</code></span></li>
+  <li><a href="make-variants.mjs">make-variants.mjs</a></li>
+  <li><a href="make-brand-v3.mjs">make-brand-v3.mjs</a> · <a href="make-brand.mjs">make-brand.mjs</a></li>
+  <li><a href="make-header-v4.mjs">make-header-v4.mjs</a> · <a href="make-header-neon.mjs">make-header-neon.mjs</a> · <a href="make-header.mjs">make-header.mjs</a></li>
+  <li><a href="make-icon.mjs">make-icon.mjs</a></li>
+</ul>
+</body>
+</html>
